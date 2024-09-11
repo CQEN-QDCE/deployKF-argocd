@@ -1,0 +1,147 @@
+########################################
+## SHARED | deploykf-helpers
+########################################
+deployKF_helpers:
+  deploykf_gateway:
+    http_endpoint: "kubeflow-test.asea.cqen.ca:8080"
+    https_endpoint: "kubeflow-test.asea.cqen.ca"
+
+
+########################################
+## SHARED | deploykf
+########################################
+deployKF:
+  extraManifests:
+    - "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: deploykf-gateway\n  namespace: deploykf-istio-gateway\n  annotations:\n    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'\n    alb.ingress.kubernetes.io/listen-ports: '[{\"HTTPS\":443}]'\n    alb.ingress.kubernetes.io/ssl-redirect: \"443\"\n    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true\n    alb.ingress.kubernetes.io/scheme: internal\n    alb.ingress.kubernetes.io/target-type: ip\n    alb.ingress.kubernetes.io/backend-protocol: HTTPS\n    alb.ingress.kubernetes.io/healthcheck-port: \"status-port\"\n    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP\n    alb.ingress.kubernetes.io/healthcheck-path: \"/healthz/ready\"\n    alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'\nspec:\n  ingressClassName: alb                  \n  rules:\n    - host: \"kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n    - host: \"*.kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n"
+
+  clusterDomain: cluster.local
+
+  kubeflow:
+    namespace: kubeflow
+    useridHeader: kubeflow-userid
+    pipelines:
+      enabled: true
+      kfpV2:
+        defaultPipelineRoot: "{scheme}://{bucket_name}/v2/artifacts/{profile_name}?region={bucket_region}&endpoint={endpoint}&disableSSL={not_use_ssl}&s3ForcePathStyle=true"
+      cache:
+        namespaceRedirect: true
+    notebooks:
+      enabled: true
+    tensorboards:
+      enabled: true
+
+  certManager:
+    clusterIssuer:
+      issuerName: "deploykf-gateway-issuer"
+
+  argoWorkflows:
+    enabled: true
+    namespace: "kubeflow-argo-workflows"
+    artifactRepository:
+      keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
+
+  auth:
+    namespace: "deploykf-auth"
+    dex:
+      clients:
+        oauth2Proxy:
+          clientId: "oauth2-proxy"
+        kubeflowPipelinesSDK:
+          enabled: true
+          clientId: "kubeflow-pipelines-sdk"
+
+  gateway:
+    name: "deploykf-gateway"
+    httpsRedirectName: "deploykf-gateway-https-redirect"
+    selectorLabels: {"app":"deploykf-gateway","istio":"deploykf-gateway"}
+    hostname: "kubeflow-test.asea.cqen.ca"
+    ports:
+      http: 8080
+      https: 443
+    servicePorts:
+      http: ~
+      https: ~
+    tls:
+      enabled: true
+      clientsUseHttps: true
+      matchSNI: false
+      redirect: true
+    enableProxyProtocol: false
+    xffNumTrustedHops: 0
+    emailToLowercase: false
+
+  minio:
+    enabled: false
+    namespace: "deploykf-minio"
+
+
+########################################
+## DEPENDENCY | istio-gateway
+########################################
+## we reference the "gateway" chart (https://istio-release.storage.googleapis.com/charts) in `dependencies` of Chart.yaml
+## we must indent our values under `gateway:` in this file
+gatewayEnabled: true
+gateway:
+  name: "deploykf-gateway"
+
+  replicaCount: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
+
+  serviceAccount:
+    name: "deploykf-gateway"
+    annotations: {}
+
+  service:
+    annotations: {}
+    type: "ClusterIP"
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    externalTrafficPolicy: ""
+    externalIPs: []
+    ports:
+      ## NOTE: the status-port is required for many LoadBalancer services (like AWS NLB),
+      ##       as they poll the first port of a service to determine if it's ready to receive traffic
+      ## NOTE: port 15021 is special, istio responds to HTTP health checks on this port under /healthz/ready
+      ##       https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio
+      - name: status-port
+        port: 15021
+        protocol: TCP
+        targetPort: 15021
+      - name: http
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: 443
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+
+  podAnnotations: {}
+
+  securityContext: ~
+  containerSecurityContext: ~
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Pod environment variables
+  env: {}
+
+  # Labels to apply to all resources
+  labels: {}
+
+  # Annotations to apply to all resources
+  annotations: {}

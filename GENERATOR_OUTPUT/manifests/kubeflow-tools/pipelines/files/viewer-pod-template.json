@@ -1,0 +1,27 @@
+{
+  "spec": {
+    "containers": [
+      {
+        "env": [
+          {
+            "name": "AWS_REGION",
+            "value": "ca-central-1"
+          },
+          {
+            "name": "S3_ENDPOINT",
+            "value": "https://s3.ca-central-1.amazonaws.com"
+          },
+          {
+            "name": "AWS_ACCESS_KEY_ID",
+            "value": ""
+          },
+          {
+            "name": "AWS_SECRET_ACCESS_KEY",
+            "value": ""
+          }
+        ]
+      }
+    ],
+    "serviceAccountName": "default-editor"
+  }
+}
