@@ -616,7 +616,7 @@ kubeflow_tools:
   ##               notebooks
   ## --------------------------------------
   notebooks:
-    enabled: false
+    enabled: true
 
     ## extra manifests
     ##  - a list of strings containing extra Kubernetes resource manifests
