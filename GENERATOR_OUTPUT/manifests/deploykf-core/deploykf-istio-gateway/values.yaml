@@ -26,7 +26,7 @@ deployKF:
       cache:
         namespaceRedirect: true
     notebooks:
-      enabled: true
+      enabled: false
     tensorboards:
       enabled: true
 

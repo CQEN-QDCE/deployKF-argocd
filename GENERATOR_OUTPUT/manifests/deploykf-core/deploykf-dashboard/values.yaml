@@ -53,10 +53,6 @@ centralDashboard:
     ##
     menuLinks:
       - type: item
-        text: Notebooks
-        icon: book
-        link: "/jupyter/"
-      - type: item
         text: TensorBoards
         icon: assessment
         link: "/tensorboards/"
@@ -103,9 +99,6 @@ centralDashboard:
     ## quick action links that appear in the home page
     ##
     quickLinks:
-      - text: Create a new Notebook
-        desc: Kubeflow Notebooks
-        link: "/jupyter/new"
       - text: Upload a Pipeline
         desc: Kubeflow Pipelines
         link: "/pipeline/#/pipelines"
@@ -119,9 +112,6 @@ centralDashboard:
       - text: Kubeflow Pipelines Documentation
         desc: Documentation for Kubeflow Pipelines
         link: https://www.kubeflow.org/docs/components/pipelines/
-      - text: Kubeflow Notebooks Documentation
-        desc: Documentation for Kubeflow Notebooks
-        link: https://www.kubeflow.org/docs/components/notebooks/
       - text: Kubeflow Training Operator Documentation
         desc: Documentation for Kubeflow Training Operator
         link: https://www.kubeflow.org/docs/components/training/
