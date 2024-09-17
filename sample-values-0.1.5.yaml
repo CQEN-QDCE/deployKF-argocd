@@ -826,30 +826,6 @@ kubeflow_tools:
 
         ## the list of available affinity configs in the dropdown
         options: []
-        #options:
-        #  - configKey: "dedicated_node_per_notebook"
-        #    displayName: "Dedicated Node Per Notebook"
-        #    affinity:
-        #      ## Require a Node with label `lifecycle=kubeflow-notebook`
-        #      nodeAffinity:
-        #        requiredDuringSchedulingIgnoredDuringExecution:
-        #          nodeSelectorTerms:
-        #            - matchExpressions:
-        #                - key: "lifecycle"
-        #                  operator: "In"
-        #                  values:
-        #                    - "kubeflow-notebook"
-        #      ## Require a Node WITHOUT an existing Pod having `notebook-name` label
-        #      podAntiAffinity:
-        #        requiredDuringSchedulingIgnoredDuringExecution:
-        #          - labelSelector:
-        #              matchExpressions:
-        #                - key: "notebook-name"
-        #                  operator: "Exists"
-        #            topologyKey: "kubernetes.io/hostname"
-        #            ## WARNING: `namespaceSelector` is Beta in 1.22 and Stable in 1.24,
-        #            ##          setting to {} is required for affinity to work across Namespaces
-        #            namespaceSelector: {}
 
       ## Tolerations
       ##
@@ -863,35 +839,6 @@ kubeflow_tools:
 
         ## the list of available toleration groups in the dropdown
         options: []
-        #options:
-        #  - groupKey: "group_1"
-        #    displayName: "4 CPU 8Gb Mem at ~$X.XXX USD per day"
-        #    tolerations:
-        #      - key: "dedicated"
-        #        operator: "Equal"
-        #        value: "kubeflow-c5.xlarge"
-        #        effect: "NoSchedule"
-        #  - groupKey: "group_2"
-        #    displayName: "8 CPU 16Gb Mem at ~$X.XXX USD per day"
-        #    tolerations:
-        #      - key: "dedicated"
-        #        operator: "Equal"
-        #        value: "kubeflow-c5.2xlarge"
-        #        effect: "NoSchedule"
-        #  - groupKey: "group_3"
-        #    displayName: "16 CPU 32Gb Mem at ~$X.XXX USD per day"
-        #    tolerations:
-        #      - key: "dedicated"
-        #        operator: "Equal"
-        #        value: "kubeflow-c5.4xlarge"
-        #        effect: "NoSchedule"
-        #  - groupKey: "group_4"
-        #    displayName: "32 CPU 256Gb Mem at ~$X.XXX USD per day"
-        #    tolerations:
-        #      - key: "dedicated"
-        #        operator: "Equal"
-        #        value: "kubeflow-r5.8xlarge"
-        #        effect: "NoSchedule"
 
       ## Shared Memory
       ##
@@ -987,11 +934,6 @@ kubeflow_tools:
       ##
       auth:
         fromEnv: true
-        # accessKey: my-access-key
-        # secretKey: my-secret-key
-        # existingSecret: ""
-        # existingSecretAccessKeyKey: "AWS_ACCESS_KEY_ID"
-        # existingSecretSecretKeyKey: "AWS_SECRET_ACCESS_KEY"
 
     ## mysql connection configs
     ##  - if `useExternal` is true, pipelines will use the specified external mysql database
