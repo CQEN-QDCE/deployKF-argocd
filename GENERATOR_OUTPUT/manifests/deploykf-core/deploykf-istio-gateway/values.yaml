@@ -12,6 +12,7 @@ deployKF_helpers:
 ########################################
 deployKF:
   extraManifests:
+    - "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: deploykf-gateway\n  namespace: deploykf-istio-gateway\n  annotations:\n    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'\n    alb.ingress.kubernetes.io/listen-ports: '[{\"HTTPS\":443}]'\n    alb.ingress.kubernetes.io/ssl-redirect: \"443\"\n    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true\n    alb.ingress.kubernetes.io/scheme: internal\n    alb.ingress.kubernetes.io/target-type: ip\n    alb.ingress.kubernetes.io/backend-protocol: HTTPS\n    alb.ingress.kubernetes.io/healthcheck-port: \"status-port\"\n    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP\n    alb.ingress.kubernetes.io/healthcheck-path: \"/healthz/ready\"\n    alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'\nspec:\n  ingressClassName: alb                  \n  rules:\n    - host: \"kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n    - host: \"*.kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n"
 
   clusterDomain: cluster.local
 
@@ -58,8 +59,8 @@ deployKF:
       http: 80
       https: 443
     servicePorts:
-      http: 80
-      https: 443
+      http: ~
+      https: ~
     tls:
       enabled: true
       clientsUseHttps: true
@@ -95,8 +96,8 @@ gateway:
     annotations: {}
 
   service:
-    annotations: {"service.beta.kubernetes.io/aws-load-balancer-internal":"true","service.beta.kubernetes.io/aws-load-balancer-nlb-target-type":"ip","service.beta.kubernetes.io/aws-load-balancer-scheme":"internal","service.beta.kubernetes.io/aws-load-balancer-subnets":"subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47","service.beta.kubernetes.io/aws-load-balancer-type":"external"}
-    type: "LoadBalancer"
+    annotations: {}
+    type: "ClusterIP"
     loadBalancerIP: ""
     loadBalancerSourceRanges: []
     externalTrafficPolicy: ""

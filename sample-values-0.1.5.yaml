@@ -238,14 +238,53 @@ deploykf_core:
   ## --------------------------------------
   deploykf_istio_gateway:
     namespace: deploykf-istio-gateway
-    
 
     ## extra manifests
     ##  - a list of strings containing extra Kubernetes resource manifests
     ##  - strings can include deployKF templates `{{< ... >}}` and Helm templates `{{ ... }}`
     ##
-    extraManifests: []              
-
+    extraManifests:
+      - |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: deploykf-gateway
+          namespace: deploykf-istio-gateway
+          annotations:
+            alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: "443"
+            alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true
+            alb.ingress.kubernetes.io/scheme: internal
+            alb.ingress.kubernetes.io/target-type: ip
+            alb.ingress.kubernetes.io/backend-protocol: HTTPS
+            alb.ingress.kubernetes.io/healthcheck-port: "status-port"
+            alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+            alb.ingress.kubernetes.io/healthcheck-path: "/healthz/ready"
+            alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'
+        spec:
+          ingressClassName: alb                  
+          rules:
+            - host: "kubeflow-test.asea.cqen.ca"
+              http:
+                paths:
+                  - path: "/"
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: "deploykf-gateway"
+                        port:
+                          name: https
+            - host: "*.kubeflow-test.asea.cqen.ca"
+              http:
+                paths:
+                  - path: "/"
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: "deploykf-gateway"
+                        port:
+                          name: https
 
     ## istio gateway configs
     ##
@@ -286,16 +325,11 @@ deploykf_core:
     ##
     gatewayService:
       name: "deploykf-gateway"
-      type: "LoadBalancer"
-      annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: "external"
-        service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
-        service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
-        service.beta.kubernetes.io/aws-load-balancer-internal: "true"
-        service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'
-      ports:
-        http: 80
-        https: 443
+      ## WARNING: must be "NodePort" if "alb.ingress.kubernetes.io/target-type" is "instance"
+      type: "ClusterIP"
+      annotations: {}
+
+
   ## --------------------------------------
   ##      deploykf-profiles-generator
   ## --------------------------------------
