@@ -63,7 +63,7 @@ deployKF:
     tls:
       enabled: true
       clientsUseHttps: true
-      matchSNI: true
+      matchSNI: false
       redirect: true
     enableProxyProtocol: false
     xffNumTrustedHops: 0
@@ -95,7 +95,7 @@ gateway:
     annotations: {}
 
   service:
-    annotations: {"service.beta.kubernetes.io/aws-load-balancer-nlb-target-type":"ip","service.beta.kubernetes.io/aws-load-balancer-scheme":"internal","service.beta.kubernetes.io/aws-load-balancer-type":"external"}
+    annotations: {"service.beta.kubernetes.io/aws-load-balancer-internal":"true","service.beta.kubernetes.io/aws-load-balancer-nlb-target-type":"ip","service.beta.kubernetes.io/aws-load-balancer-scheme":"internal","service.beta.kubernetes.io/aws-load-balancer-subnets":"subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47","service.beta.kubernetes.io/aws-load-balancer-type":"external"}
     type: "LoadBalancer"
     loadBalancerIP: ""
     loadBalancerSourceRanges: []

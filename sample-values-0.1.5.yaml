@@ -267,10 +267,7 @@ deploykf_core:
       tls:
         ## ALB does NOT forward the SNI after TLS termination, 
         ## so we must disable SNI matching in the gateway
-        enabled: true
-        matchSNI: true
-        clientsUseHttps: true
-        redirect: true
+        matchSNI: false
 
       ## the pod labels used by the gateway to find the ingress gateway deployment
       ##
@@ -294,6 +291,8 @@ deploykf_core:
         service.beta.kubernetes.io/aws-load-balancer-type: "external"
         service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
         service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
+        service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+        service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'
       ports:
         http: 80
         https: 443
