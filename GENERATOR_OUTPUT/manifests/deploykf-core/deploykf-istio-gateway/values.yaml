@@ -3,7 +3,7 @@
 ########################################
 deployKF_helpers:
   deploykf_gateway:
-    http_endpoint: "kubeflow-test.asea.cqen.ca:8080"
+    http_endpoint: "kubeflow-test.asea.cqen.ca"
     https_endpoint: "kubeflow-test.asea.cqen.ca"
 
 
@@ -56,7 +56,7 @@ deployKF:
     selectorLabels: {"app":"deploykf-gateway","istio":"deploykf-gateway"}
     hostname: "kubeflow-test.asea.cqen.ca"
     ports:
-      http: 8080
+      http: 80
       https: 443
     servicePorts:
       http: ~
@@ -112,9 +112,9 @@ gateway:
         protocol: TCP
         targetPort: 15021
       - name: http
-        port: 8080
+        port: 80
         protocol: TCP
-        targetPort: 8080
+        targetPort: 80
       - name: https
         port: 443
         protocol: TCP

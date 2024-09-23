@@ -3,7 +3,7 @@ spawnerFormDefaults:
     options: []
     readOnly: false
     value: aws.amazon.com/neuron
-  allowCustomImage: false
+  allowCustomImage: true
   configurations:
     readOnly: false
     value: []
@@ -36,6 +36,7 @@ spawnerFormDefaults:
       - kubeflownotebookswg/jupyter-tensorflow-full:v1.9.0
       - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.9.0
       - elyra/kf-notebook:3.15.0
+      - rocm/pytorch:latest
       - public.ecr.aws/kubeflow-on-aws/notebook-servers/jupyter-tensorflow:2.12.0-cpu-py310-ubuntu20.04-ec2-v1.0
       - public.ecr.aws/kubeflow-on-aws/notebook-servers/jupyter-tensorflow:2.12.0-gpu-py310-cu118-ubuntu20.04-ec2-v1.0
       - public.ecr.aws/kubeflow-on-aws/notebook-servers/jupyter-pytorch:2.0.0-gpu-py310-cu118-ubuntu20.04-ec2-v1.0

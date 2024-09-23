@@ -3,7 +3,7 @@
 ########################################
 deployKF_helpers:
   deploykf_gateway:
-    http_endpoint: "kubeflow-test.asea.cqen.ca:8080"
+    http_endpoint: "kubeflow-test.asea.cqen.ca"
     https_endpoint: "kubeflow-test.asea.cqen.ca"
     is_self_signed_cert: true
 
