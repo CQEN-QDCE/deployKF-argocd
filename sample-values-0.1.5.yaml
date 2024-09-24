@@ -307,6 +307,8 @@ deploykf_core:
         ## ALB does NOT forward the SNI after TLS termination, 
         ## so we must disable SNI matching in the gateway
         matchSNI: false
+        redirect: false
+
       ## the pod labels used by the gateway to find the ingress gateway deployment
       ##
       selectorLabels:
