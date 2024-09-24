@@ -272,7 +272,7 @@ deploykf_core:
                       service:
                         name: "deploykf-gateway"
                         port:
-                          name: https
+                          name: http
             - host: "*.kubeflow-test.asea.cqen.ca"
               http:
                 paths:
@@ -282,7 +282,7 @@ deploykf_core:
                       service:
                         name: "deploykf-gateway"
                         port:
-                          name: https
+                          name: http
 
     ## istio gateway configs
     ##
