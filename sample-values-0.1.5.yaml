@@ -262,6 +262,7 @@ deploykf_core:
             alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
             alb.ingress.kubernetes.io/healthcheck-path: "/healthz/ready"
             alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'
+            service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
         spec:
           ingressClassName: alb              
           rules:
