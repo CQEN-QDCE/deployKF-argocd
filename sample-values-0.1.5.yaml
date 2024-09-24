@@ -252,7 +252,7 @@ deploykf_core:
           namespace: deploykf-istio-gateway
           annotations:
             alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'
-            alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
             alb.ingress.kubernetes.io/ssl-redirect: "443"
             alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true
             alb.ingress.kubernetes.io/scheme: internal
@@ -274,7 +274,7 @@ deploykf_core:
                       service:
                         name: "deploykf-gateway"
                         port:
-                          name: https
+                          name: http
             - host: "*.kubeflow-test.asea.cqen.ca"
               http:
                 paths:
@@ -284,7 +284,7 @@ deploykf_core:
                       service:
                         name: "deploykf-gateway"
                         port:
-                          name: https
+                          name: http
 
     ## istio gateway configs
     ##
