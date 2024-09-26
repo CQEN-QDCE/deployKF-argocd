@@ -20,7 +20,7 @@ deployKF:
     namespace: "deploykf-istio-gateway"
     serviceAccount: "deploykf-gateway"
     name: "deploykf-gateway"
-    hostname: "kubeflow-test.asea.cqen.ca"
+    hostname: "asea.cqen.ca"
 
 
 ########################################
@@ -98,7 +98,7 @@ centralDashboard:
         iframe: false
         text: Argo Server
         icon: settings-input-composite
-        link: "https://argo-server.kubeflow-test.asea.cqen.ca/workflows/{ns}"
+        link: "https://argo-server.asea.cqen.ca/workflows/{ns}"
 
     ## quick action links that appear in the home page
     ##

@@ -289,7 +289,7 @@ deploykf_core:
     ## istio gateway configs
     ##
     gateway:
-      hostname: kubeflow-test.asea.cqen.ca
+      hostname: asea.cqen.ca
       ## the hostname that the gateway will listen on
       ##  - subdomains of this hostname may also be used, depending on which apps are enabled
       ##

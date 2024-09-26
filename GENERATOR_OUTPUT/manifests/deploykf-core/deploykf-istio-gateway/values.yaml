@@ -3,8 +3,8 @@
 ########################################
 deployKF_helpers:
   deploykf_gateway:
-    http_endpoint: "kubeflow-test.asea.cqen.ca"
-    https_endpoint: "kubeflow-test.asea.cqen.ca"
+    http_endpoint: "asea.cqen.ca"
+    https_endpoint: "asea.cqen.ca"
 
 
 ########################################
@@ -54,7 +54,7 @@ deployKF:
     name: "deploykf-gateway"
     httpsRedirectName: "deploykf-gateway-https-redirect"
     selectorLabels: {"app":"deploykf-gateway","istio":"deploykf-gateway"}
-    hostname: "kubeflow-test.asea.cqen.ca"
+    hostname: "asea.cqen.ca"
     ports:
       http: 80
       https: 443
