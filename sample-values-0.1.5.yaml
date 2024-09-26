@@ -134,28 +134,6 @@ deploykf_core:
     ##
     dex:
 
-      ## dex static passwords
-      ##  - a list of users to create in dex's built-in password database
-      ##  - each element is a map with keys `email` and `password`,
-      ##    the `password` is a map with the following keys:
-      ##     - `value`: the password value
-      ##     - `existingSecret`: the name of a kubernetes secret containing the password (overrides `value`)
-      ##     - `existingSecretKey`: the key in the secret that contains the password
-      ##     - `type`: how the password is provided (default: "plain")
-      ##         - "plain": the password is provided as plain text
-      ##         - "hash": the password is provided as a bcrypt hash
-      ##  - a bcrypt hash for "PASSWORD_STRING" can be generated with one of the following:
-      ##     - echo "PASSWORD_STRING" | htpasswd -BinC 10 NULL | cut -d: -f2
-      ##     - python -c 'import bcrypt; print(bcrypt.hashpw(b"PASSWORD_STRING", bcrypt.gensalt(10)).decode())'
-      ##
-      #staticPasswords:
-      #  - email: "user1@example.com"
-      #    password:
-      #      value: "user1"
-      #  - email: "user2@example.com"
-      #    password:
-      #      value: "user2"
-
       ## dex connectors
       ##  - dex connectors which allow bridging trust to external identity providers
       ##    https://dexidp.io/docs/connectors/
@@ -475,56 +453,6 @@ deploykf_opt:
     enabled: false
     namespace: deploykf-minio
 
-    ## root user configs for minio
-    ##
-    rootUser:
-      existingSecret: "generated--deploykf-minio-root-user"
-      existingSecretUsernameKey: "username"
-      existingSecretPasswordKey: "password"
-      generateSecret: true
-
-      ## service accounts for the root user
-      ##  - these service accounts are created and/or updated by a post-install job
-      ##  - each element in the list is a map with the following fields:
-      ##     - `accessKey`: the access-key for the service account
-      ##     - `secretKey`: the secret-key for the service account
-      ##     - `existingSecret`: the name of an existing secret containing the access & secret keys
-      ##     - `existingSecretAccessKeyKey`: the key in the secret containing the access-key (default: "access_key")
-      ##     - `existingSecretSecretKeyKey`: the key in the secret containing the secret-key (default: "secret_key")
-      ##     - `generateSecret`: if true, random keys are generated and stored in `existingSecret` (default: false)
-      ##                         note, `existingSecret` must be set to a unique value for each service account
-      ##                         note, the job will fail if the secret already exists in the cluster
-      ##     - `policy`: the minio policy document as a YAML map, ~not a string~ (default: empty/root-access)
-      ##                 https://min.io/docs/minio/container/administration/identity-access-management/policy-based-access-control.html
-      ##  - [WARNING] if a `policy` is not specified, the service account will have root access
-      ##  - [WARNING] unlisted minio service accounts will be removed from minio
-      ##  - [WARNING] unlisted kubernetes secrets with this label will be removed from the cluster:
-      ##              "deploykf-minio.deploykf.org/generated-minio-root-service-account: true"
-      ##
-      serviceAccounts: []
-
-    ## minio buckets
-    ##  - these buckets are created and/or updated by a post-install job
-    ##  - each element is a map with the following keys:
-    ##     - `name`: the name of the bucket
-    ##     - `versioning`: the name of the policy to apply to the bucket
-    ##  - if Kubeflow Pipelines is enabled, a bucket named `kubeflow_tools.pipelines.bucket.name`
-    ##    is automatically added to this list, with `versioning` disabled
-    ##
-    buckets: []
-
-    ## minio access policies
-    ##  - [WARNING] existing policies that have "@" in their name will be removed from minio if they are not listed here
-    ##  - these policies are created and/or updated by a post-install job
-    ##  - each element is a map with the following keys:
-    ##     - `name`: the name of the policy
-    ##     - `policy`: the minio policy document as a YAML map, ~not a string~
-    ##                 https://min.io/docs/minio/container/administration/identity-access-management/policy-based-access-control.html
-    ##  - if Kubeflow Pipelines is enabled, and `identity.openid.policyClaim` is set to "email",
-    ##    policies are automatically generated for each user based on their `access.role` in each profile
-    ##
-    policies: []
-
   ## --------------------------------------
   ##            deploykf-mysql
   ## --------------------------------------
@@ -540,7 +468,6 @@ deploykf_opt:
     ##
     rootUser:
       existingSecret: "generated--deploykf-mysql-root-user"
-      existingSecretPasswordKey: "password"
       generateSecret: true
 
     ## configs for the kubeflow mysql user
@@ -549,8 +476,6 @@ deploykf_opt:
     ##
     kubeflowUser:
       existingSecret: "generated--deploykf-mysql-kubeflow-user"
-      existingSecretUsernameKey: "username"
-      existingSecretPasswordKey: "password"
       generateSecret: true
 
 
@@ -567,10 +492,6 @@ kubeflow_dependencies:
   kubeflow_argo_workflows:
     enabled: true
     # namespace: kubeflow-argo-workflows
-
-    deployKF:
-      gateway:
-        hostname: "argo.asea.cqen.ca"
     controller:
       serviceAccount:
         annotations:
@@ -601,15 +522,6 @@ kubeflow_tools:
     ##
     mysql:
       useExternal: false
-      host: "mysql.example.com"
-      port: 3306
-      auth:
-        username: kubeflow
-        password: password
-        existingSecret: ""
-        existingSecretUsernameKey: "username"
-        existingSecretPasswordKey: "password"
-
     ## mysql database name
     ##
     mysqlDatabase: katib
@@ -946,14 +858,6 @@ kubeflow_tools:
     ##
     mysql:
       useExternal: false
-      host: "mysql.example.com"
-      port: 3306
-      auth:
-        username: kubeflow
-        password: password
-        existingSecret: ""
-        existingSecretUsernameKey: "username"
-        existingSecretPasswordKey: "password"
 
     ## mysql database names
     ##
