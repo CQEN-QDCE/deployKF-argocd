@@ -42,7 +42,7 @@ deployKF:
     namespace: "deploykf-istio-gateway"
     serviceAccount: "deploykf-gateway"
     name: "deploykf-gateway"
-    hostname: "kubeflow-test.asea.cqen.ca"
+    hostname: "argo.asea.cqen.ca"
     tls:
       enabled: true
       clientsUseHttps: true

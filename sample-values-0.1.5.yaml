@@ -567,6 +567,10 @@ kubeflow_dependencies:
   kubeflow_argo_workflows:
     enabled: true
     # namespace: kubeflow-argo-workflows
+
+    deployKF:
+      gateway:
+        hostname: "argo.asea.cqen.ca"
     controller:
       serviceAccount:
         annotations:
