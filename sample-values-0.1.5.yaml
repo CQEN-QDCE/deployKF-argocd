@@ -567,7 +567,7 @@ kubeflow_dependencies:
   kubeflow_argo_workflows:
     enabled: true
     gateway:
-      hostname: "argo-test.asea.cqen.ca"
+      hostname: "asea.cqen.ca"
     # namespace: kubeflow-argo-workflows
     controller:
       serviceAccount:
