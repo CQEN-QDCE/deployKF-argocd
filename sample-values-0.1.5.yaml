@@ -265,7 +265,7 @@ deploykf_core:
         spec:
           ingressClassName: alb              
           rules:
-            - host: "kubeflow-test.asea.cqen.ca"
+            - host: "asea.cqen.ca"
               http:
                 paths:
                   - path: "/"
@@ -275,7 +275,7 @@ deploykf_core:
                         name: "deploykf-gateway"
                         port:
                           name: https
-            - host: "*.kubeflow-test.asea.cqen.ca"
+            - host: "*.asea.cqen.ca"
               http:
                 paths:
                   - path: "/"
