@@ -5,6 +5,6 @@ metadata:
   namespace: kubeflow
 spec:
   hosts:
-    - "asea.cqen.ca"
+    - "kubeflow-test.asea.cqen.ca"
   gateways:
     - deploykf-istio-gateway/deploykf-gateway

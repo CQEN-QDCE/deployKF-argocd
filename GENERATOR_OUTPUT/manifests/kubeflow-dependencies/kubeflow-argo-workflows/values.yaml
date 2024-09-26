@@ -3,8 +3,8 @@
 ########################################
 deployKF_helpers:
   deploykf_gateway:
-    http_endpoint: "asea.cqen.ca"
-    https_endpoint: "asea.cqen.ca"
+    http_endpoint: "kubeflow-test.asea.cqen.ca"
+    https_endpoint: "kubeflow-test.asea.cqen.ca"
     is_self_signed_cert: true
 
   kubeflow_pipelines:
@@ -42,7 +42,7 @@ deployKF:
     namespace: "deploykf-istio-gateway"
     serviceAccount: "deploykf-gateway"
     name: "deploykf-gateway"
-    hostname: "asea.cqen.ca"
+    hostname: "kubeflow-test.asea.cqen.ca"
     tls:
       enabled: true
       clientsUseHttps: true

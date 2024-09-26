@@ -265,7 +265,7 @@ deploykf_core:
         spec:
           ingressClassName: alb              
           rules:
-            - host: "asea.cqen.ca"
+            - host: "kubeflow-test.asea.cqen.ca"
               http:
                 paths:
                   - path: "/"
@@ -275,7 +275,7 @@ deploykf_core:
                         name: "deploykf-gateway"
                         port:
                           name: https
-            - host: "*.asea.cqen.ca"
+            - host: "*.kubeflow-test.asea.cqen.ca"
               http:
                 paths:
                   - path: "/"
@@ -289,7 +289,7 @@ deploykf_core:
     ## istio gateway configs
     ##
     gateway:
-      hostname: asea.cqen.ca
+      hostname: kubeflow-test.asea.cqen.ca
       ## the hostname that the gateway will listen on
       ##  - subdomains of this hostname may also be used, depending on which apps are enabled
       ##
@@ -566,8 +566,6 @@ kubeflow_dependencies:
   ## --------------------------------------
   kubeflow_argo_workflows:
     enabled: true
-    gateway:
-      hostname: "asea.cqen.ca"
     # namespace: kubeflow-argo-workflows
     controller:
       serviceAccount:

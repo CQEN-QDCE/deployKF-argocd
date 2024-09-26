@@ -3,8 +3,8 @@
 ########################################
 deployKF_helpers:
   deploykf_gateway:
-    http_endpoint: "asea.cqen.ca"
-    https_endpoint: "asea.cqen.ca"
+    http_endpoint: "kubeflow-test.asea.cqen.ca"
+    https_endpoint: "kubeflow-test.asea.cqen.ca"
 
 
 ########################################
@@ -12,7 +12,7 @@ deployKF_helpers:
 ########################################
 deployKF:
   extraManifests:
-    - "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: deploykf-gateway\n  namespace: deploykf-istio-gateway\n  annotations:\n    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'\n    alb.ingress.kubernetes.io/listen-ports: '[{\"HTTPS\":443}]'\n    alb.ingress.kubernetes.io/ssl-redirect: \"443\"\n    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true\n    alb.ingress.kubernetes.io/scheme: internal\n    alb.ingress.kubernetes.io/target-type: ip\n    alb.ingress.kubernetes.io/backend-protocol: HTTPS\n    alb.ingress.kubernetes.io/healthcheck-port: \"status-port\"\n    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP\n    alb.ingress.kubernetes.io/healthcheck-path: \"/healthz/ready\"\n    alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'\nspec:\n  ingressClassName: alb              \n  rules:\n    - host: \"asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n    - host: \"*.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n"
+    - "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: deploykf-gateway\n  namespace: deploykf-istio-gateway\n  annotations:\n    alb.ingress.kubernetes.io/certificate-arn: 'arn:aws:acm:ca-central-1:131485263174:certificate/4995f314-12a0-4c95-8dc7-803c0f881b9d'\n    alb.ingress.kubernetes.io/listen-ports: '[{\"HTTPS\":443}]'\n    alb.ingress.kubernetes.io/ssl-redirect: \"443\"\n    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true\n    alb.ingress.kubernetes.io/scheme: internal\n    alb.ingress.kubernetes.io/target-type: ip\n    alb.ingress.kubernetes.io/backend-protocol: HTTPS\n    alb.ingress.kubernetes.io/healthcheck-port: \"status-port\"\n    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP\n    alb.ingress.kubernetes.io/healthcheck-path: \"/healthz/ready\"\n    alb.ingress.kubernetes.io/subnets: 'subnet-09190b7878dc70cb5, subnet-0a13c0d5b26348f47'\nspec:\n  ingressClassName: alb              \n  rules:\n    - host: \"kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n    - host: \"*.kubeflow-test.asea.cqen.ca\"\n      http:\n        paths:\n          - path: \"/\"\n            pathType: Prefix\n            backend:\n              service:\n                name: \"deploykf-gateway\"\n                port:\n                  name: https\n"
 
   clusterDomain: cluster.local
 
@@ -54,7 +54,7 @@ deployKF:
     name: "deploykf-gateway"
     httpsRedirectName: "deploykf-gateway-https-redirect"
     selectorLabels: {"app":"deploykf-gateway","istio":"deploykf-gateway"}
-    hostname: "asea.cqen.ca"
+    hostname: "kubeflow-test.asea.cqen.ca"
     ports:
       http: 80
       https: 443
