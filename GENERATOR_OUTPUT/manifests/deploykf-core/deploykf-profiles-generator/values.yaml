@@ -3,7 +3,7 @@
 ########################################
 deployKF_helpers:
   deploykf_profiles:
-    users_id_mapping: {"user-1":{"email":"user1@example.com","id":"user-1"},"user-2":{"email":"user2@example.com","id":"user-2"}}
+    users_id_mapping: {"user-1":{"email":"mohamedfawzi.touati@mcn.gouv.qc.ca","id":"user-1"},"user-2":{"email":"pierre.jiji@mcn.gouv.qc.ca","id":"user-2"},"user-3":{"email":"kami.rousseau@mcn.gouv.qc.ca","id":"user-3"}}
     profiles_users_access_mapping: {"team-1":{"user-1":{"notebooksAccess":true,"role":"edit"},"user-2":{"notebooksAccess":true,"role":"edit"}},"team-1-prod":{"user-1":{"notebooksAccess":false,"role":"view"},"user-2":{"notebooksAccess":false,"role":"view"}}}
     users_profiles_access_mapping: {"user-1":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"}},"user-2":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"}}}
 
@@ -83,14 +83,14 @@ profileDefaults:
 ## user entities
 ##  - a list of users that can be referenced when defining profile members
 ##
-users: [{"email":"user1@example.com","id":"user-1"},{"email":"user2@example.com","id":"user-2"}]
+users: [{"email":"mohamedfawzi.touati@mcn.gouv.qc.ca","id":"user-1"},{"email":"pierre.jiji@mcn.gouv.qc.ca","id":"user-2"},{"email":"kami.rousseau@mcn.gouv.qc.ca","id":"user-3"}]
 
 ## group entities
 ##  - a list of groups that can be referenced when defining profile members
 ##
-groups: [{"id":"team-1","users":["user-1","user-2"]}]
+groups: [{"id":"team-1--admins","users":["user-1","user-2"]},{"id":"team-1--users","users":["user-1","user-2","user-3"]}]
 
 ## profile definitions
 ##  - a list of profile definitions to be generated
 ##
-profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1"}],"name":"team-1"},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1"}],"name":"team-1-prod"}]
+profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-1"},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1--admins"}],"name":"team-1-prod"}]

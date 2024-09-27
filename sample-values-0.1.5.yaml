@@ -376,6 +376,17 @@ deploykf_core:
             existingSecretAccessKeyKey: "access_key"
             existingSecretSecretKeyKey: "secret_key"
 
+    users:
+
+      - id: user-1
+        email: "mohamedfawzi.touati@mcn.gouv.qc.ca"
+    
+      - id: user-2
+        email: "pierre.jiji@mcn.gouv.qc.ca"
+
+      - id: user-3
+        email: "kami.rousseau@mcn.gouv.qc.ca"
+
     ## user entities
     ##  - a list of users that can be referenced when defining profile members
     ##  - each element is a map with the following keys:
@@ -399,6 +410,19 @@ deploykf_core:
     #    users:
     #      - user-1
     #      - user-2
+
+    groups:
+      - id: team-1--admins
+        users:
+          - user-1
+          - user-2
+
+      - id: team-1--users
+        users:
+          - user-1
+          - user-2
+          - user-3
+
 
     ## profile definitions
     ##  - a list of profile definitions to be generated
@@ -437,6 +461,20 @@ deploykf_core:
     #        access:
     #          role: view
     #          notebooksAccess: false
+    profiles:
+     - name: team-1
+       members:
+         - group: team-1--admins
+           access:
+             role: edit
+             notebooksAccess: true
+    
+     - name: team-1-prod
+       members:
+         - group: team-1--admins
+           access:
+             role: view
+             notebooksAccess: false
 
 
 ## --------------------------------------------------------------------------------
