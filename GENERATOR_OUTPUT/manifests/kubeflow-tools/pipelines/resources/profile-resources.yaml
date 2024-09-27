@@ -482,7 +482,7 @@ data:
     s3:
       endpoint: "s3.ca-central-1.amazonaws.com"
       insecure: false
-      bucket: "test1-kf-artifact-store"
+      bucket: "eks-deploykf-kf-artifact-store"
       region: "ca-central-1"
       keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
       useSDKCreds: true
@@ -497,7 +497,7 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "s3://test1-kf-artifact-store/v2/artifacts/team-1?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-1?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -709,7 +709,7 @@ data:
     s3:
       endpoint: "s3.ca-central-1.amazonaws.com"
       insecure: false
-      bucket: "test1-kf-artifact-store"
+      bucket: "eks-deploykf-kf-artifact-store"
       region: "ca-central-1"
       keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
       useSDKCreds: true
@@ -724,4 +724,4 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "s3://test1-kf-artifact-store/v2/artifacts/team-1-prod?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-1-prod?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"

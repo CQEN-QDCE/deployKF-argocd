@@ -49,7 +49,7 @@ deployKF:
 
   pipelines:
     bucket:
-      name: "test1-kf-artifact-store"
+      name: "eks-deploykf-kf-artifact-store"
       region: "ca-central-1"
     objectStore:
       auth:

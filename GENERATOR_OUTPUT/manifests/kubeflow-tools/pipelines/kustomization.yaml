@@ -76,7 +76,7 @@ configMapGenerator:
       ## ================================
       ## Bucket Configs
       ## ================================
-      - bucketName="test1-kf-artifact-store"
+      - bucketName="eks-deploykf-kf-artifact-store"
       - bucketRegion="ca-central-1"
       ## NOTE: this is not actually used in our manifests to create `ConfigMap/kfp-launcher`
       ##       as we have replaced the "kubeflow-pipelines-profile-controller" with explicitly
