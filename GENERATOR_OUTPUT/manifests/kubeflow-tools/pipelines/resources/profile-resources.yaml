@@ -212,6 +212,66 @@ spec:
               - (name): "kfp-launcher"
                 image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
 ---
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: kubeflow-pipelines-api-token
+  namespace: "team-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  desc: "Mount a serviceAccountToken to authenticate with Kubeflow Pipelines API"
+  env:
+    - name: KF_PIPELINES_SA_TOKEN_PATH
+      value: "/var/run/secrets/ml-pipeline/token"
+  selector:
+    matchLabels:
+      kubeflow-pipelines-api-token: "true"
+  volumeMounts:
+    - mountPath: "/var/run/secrets/ml-pipeline"
+      name: volume-ml-pipeline-token
+      readOnly: true
+  volumes:
+    - name: volume-ml-pipeline-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: pipelines.kubeflow.org
+              expirationSeconds: 7200
+              path: token
+---
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: kubeflow-pipelines-api-token
+  namespace: "team-1-prod"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  desc: "Mount a serviceAccountToken to authenticate with Kubeflow Pipelines API"
+  env:
+    - name: KF_PIPELINES_SA_TOKEN_PATH
+      value: "/var/run/secrets/ml-pipeline/token"
+  selector:
+    matchLabels:
+      kubeflow-pipelines-api-token: "true"
+  volumeMounts:
+    - mountPath: "/var/run/secrets/ml-pipeline"
+      name: volume-ml-pipeline-token
+      readOnly: true
+  volumes:
+    - name: volume-ml-pipeline-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: pipelines.kubeflow.org
+              expirationSeconds: 7200
+              path: token
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
