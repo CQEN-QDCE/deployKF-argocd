@@ -93,4 +93,4 @@ groups: [{"id":"team-1--admins","users":["user-1","user-2"]},{"id":"team-1--user
 ## profile definitions
 ##  - a list of profile definitions to be generated
 ##
-profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-1"},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1--admins"}],"name":"team-1-prod"}]
+profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-1","plugins":[{"kind":"AwsIamForServiceAccount","spec":{"AnnotateOnly":true,"awsIamRole":"arn:aws:iam::131485263174:role/team-1-role"}}]},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1--admins"}],"name":"team-1-prod"}]

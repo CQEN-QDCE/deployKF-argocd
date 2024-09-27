@@ -468,6 +468,11 @@ deploykf_core:
            access:
              role: edit
              notebooksAccess: true
+       plugins:
+          - kind: AwsIamForServiceAccount
+            spec:
+              awsIamRole: arn:aws:iam::131485263174:role/team-1-role
+              AnnotateOnly: true
     
      - name: team-1-prod
        members:
