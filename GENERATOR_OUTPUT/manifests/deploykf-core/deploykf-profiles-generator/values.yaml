@@ -4,8 +4,8 @@
 deployKF_helpers:
   deploykf_profiles:
     users_id_mapping: {"user-1":{"email":"mohamedfawzi.touati@mcn.gouv.qc.ca","id":"user-1"},"user-2":{"email":"pierre.jiji@mcn.gouv.qc.ca","id":"user-2"},"user-3":{"email":"kami.rousseau@mcn.gouv.qc.ca","id":"user-3"}}
-    profiles_users_access_mapping: {"team-1":{"user-1":{"notebooksAccess":true,"role":"edit"},"user-2":{"notebooksAccess":true,"role":"edit"}},"team-1-prod":{"user-1":{"notebooksAccess":false,"role":"view"},"user-2":{"notebooksAccess":false,"role":"view"}}}
-    users_profiles_access_mapping: {"user-1":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"}},"user-2":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"}}}
+    profiles_users_access_mapping: {"team-1":{"user-1":{"notebooksAccess":true,"role":"edit"},"user-2":{"notebooksAccess":true,"role":"edit"}},"team-1-prod":{"user-1":{"notebooksAccess":false,"role":"view"},"user-2":{"notebooksAccess":false,"role":"view"}},"team-fawzi":{"user-1":{"notebooksAccess":true,"role":"edit"},"user-2":{"notebooksAccess":true,"role":"edit"}}}
+    users_profiles_access_mapping: {"user-1":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"},"team-fawzi":{"notebooksAccess":true,"role":"edit"}},"user-2":{"team-1":{"notebooksAccess":true,"role":"edit"},"team-1-prod":{"notebooksAccess":false,"role":"view"},"team-fawzi":{"notebooksAccess":true,"role":"edit"}}}
 
   kubeflow:
     pipelines:
@@ -93,4 +93,4 @@ groups: [{"id":"team-1--admins","users":["user-1","user-2"]},{"id":"team-1--user
 ## profile definitions
 ##  - a list of profile definitions to be generated
 ##
-profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-1","plugins":[{"kind":"AwsIamForServiceAccount","spec":{"AnnotateOnly":true,"awsIamRole":"arn:aws:iam::131485263174:role/team-1-role"}}]},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1--admins"}],"name":"team-1-prod"}]
+profiles: [{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-fawzi","plugins":[{"kind":"AwsIamForServiceAccount","spec":{"AnnotateOnly":true,"awsIamRole":"arn:aws:iam::131485263174:role/team-fawzi-role"}}]},{"members":[{"access":{"notebooksAccess":true,"role":"edit"},"group":"team-1--admins"}],"name":"team-1","plugins":[{"kind":"AwsIamForServiceAccount","spec":{"AnnotateOnly":true,"awsIamRole":"arn:aws:iam::131485263174:role/team-1-role"}}]},{"members":[{"access":{"notebooksAccess":false,"role":"view"},"group":"team-1--admins"}],"name":"team-1-prod"}]
