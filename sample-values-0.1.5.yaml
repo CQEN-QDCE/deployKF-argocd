@@ -473,7 +473,7 @@ deploykf_core:
             spec:
               awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
               AnnotateOnly: true
-              
+
      - name: team-1
        members:
          - group: team-1--admins
@@ -548,7 +548,7 @@ kubeflow_dependencies:
   ## --------------------------------------
   kubeflow_argo_workflows:
     enabled: true
-    # namespace: kubeflow-argo-workflows
+    namespace: kubeflow
     controller:
       serviceAccount:
         annotations:

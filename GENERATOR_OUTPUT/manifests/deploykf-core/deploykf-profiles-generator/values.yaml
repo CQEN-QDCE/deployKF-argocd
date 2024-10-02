@@ -23,7 +23,7 @@ deployKF:
 
   argoWorkflows:
     enabled: true
-    namespace: "kubeflow-argo-workflows"
+    namespace: "kubeflow"
 
   kubeflow:
     useridHeader: kubeflow-userid
