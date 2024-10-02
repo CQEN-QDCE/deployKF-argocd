@@ -877,6 +877,7 @@ kubeflow_tools:
   ## --------------------------------------
   pipelines:
     enabled: true
+    namespace: kubeflow
     serviceAccounts:
       apiServer:
         annotations:
