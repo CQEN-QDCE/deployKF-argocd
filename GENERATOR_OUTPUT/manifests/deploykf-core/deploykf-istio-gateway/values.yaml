@@ -36,7 +36,7 @@ deployKF:
 
   argoWorkflows:
     enabled: true
-    namespace: "kubeflow"
+    namespace: "kubeflow-argo-workflows"
     artifactRepository:
       keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
 

@@ -548,7 +548,7 @@ kubeflow_dependencies:
   ## --------------------------------------
   kubeflow_argo_workflows:
     enabled: true
-    namespace: kubeflow
+    #namespace: kubeflow
     controller:
       serviceAccount:
         annotations:
