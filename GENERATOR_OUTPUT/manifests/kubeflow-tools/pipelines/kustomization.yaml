@@ -119,8 +119,8 @@ images:
     newName: "ghcr.io/deploykf/kubeflow-pipelines/cache-server"
     newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/metadata-envoy
-    newName: "gcr.io/ml-pipeline/metadata-envoy"
-    newTag: "2.0.0-alpha.7"
+    newName: "ghcr.io/deploykf/kubeflow-pipelines/metadata-envoy"
+    newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/metadata-writer
     newName: "gcr.io/ml-pipeline/metadata-writer"
     newTag: "2.0.0-alpha.7"
