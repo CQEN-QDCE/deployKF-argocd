@@ -118,7 +118,7 @@ dex:
     ##
     argoServer:
       enabled: true
-      namespace: "kubeflow"
+      namespace: "kubeflow-argo-workflows"
       clientId: "argo-server"
       clientSecret:
         value: "bbbbbbbbbbbbbbbb"
