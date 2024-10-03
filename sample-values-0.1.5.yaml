@@ -879,9 +879,44 @@ kubeflow_tools:
   pipelines:
     enabled: true
     images:
+      
+      kfpMetadataEnvoy:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/metadata-envoy
+        tag: 2.0.0-alpha.7
+
+      kfpMetadataWriter:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/metadata-writer
+        tag: 2.0.0-alpha.7
+
       kfpApiServer:
         repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server
         tag: 2.0.0-alpha.7
+
+      kfpPersistenceagent:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/persistenceagent
+        tag: 2.0.0-alpha.7
+
+      kfpScheduledworkflow:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/scheduledworkflow
+        tag: 2.0.0-alpha.7
+
+      kfpFrontend:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/frontend
+        tag: 2.0.0-alpha.7
+
+      kfpViewerCrdController:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/viewer-crd-controller
+        tag: 2.0.0-alpha.7
+
+      kfpVisualizationServer:
+        repository: ghcr.io/deploykf/kubeflow-pipelines/visualization-server
+        tag: 2.0.0-alpha.7
+
+      tfxMlMetadataStoreServer:
+        repository: ghcr.io/deploykf/ml_metadata_store_server
+        ## NOTE: this tag is not aligned to the other KFP images
+        tag: 2.0.0-alpha.7
+
     namespace: kubeflow-argo-workflows
     serviceAccounts:
       apiServer:

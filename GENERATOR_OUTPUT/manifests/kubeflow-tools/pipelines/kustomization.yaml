@@ -120,30 +120,30 @@ images:
     newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/metadata-envoy
     newName: "ghcr.io/deploykf/kubeflow-pipelines/metadata-envoy"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/metadata-writer
     newName: "ghcr.io/deploykf/kubeflow-pipelines/metadata-writer"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/api-server
     newName: "public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/persistenceagent
     newName: "ghcr.io/deploykf/kubeflow-pipelines/persistenceagent"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/scheduledworkflow
     newName: "ghcr.io/deploykf/kubeflow-pipelines/scheduledworkflow"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/frontend
     newName: "ghcr.io/deploykf/kubeflow-pipelines/frontend"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/viewer-crd-controller
     newName: "ghcr.io/deploykf/kubeflow-pipelines/viewer-crd-controller"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/visualization-server
     newName: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server"
-    newTag: "2.1.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
 
   ## NOTE: this tag is not aligned to the other KFP images
   - name: gcr.io/tfx-oss-public/ml_metadata_store_server
     newName: "ghcr.io/deploykf/ml_metadata_store_server"
-    newTag: "1.14.0-deploykf.0"
+    newTag: "2.0.0-alpha.7"
