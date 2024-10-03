@@ -365,10 +365,7 @@ deploykf_core:
         ## the default Kubeflow Pipelines configs for profiles
         ##
         kubeflowPipelines:
-          images:
-            kfpApiServer:
-            repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server
-            tag: 2.0.0-alpha.7
+          
 
           ## the default Kubeflow Pipelines object store auth configs for profiles
           ##  - the behaviour of these configs depends on `kubeflow_tools.kubeflow_pipelines.objectStore`
@@ -881,6 +878,10 @@ kubeflow_tools:
   ## --------------------------------------
   pipelines:
     enabled: true
+    images:
+      kfpApiServer:
+        repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server
+        tag: 2.0.0-alpha.7
     namespace: kubeflow-argo-workflows
     serviceAccounts:
       apiServer:
