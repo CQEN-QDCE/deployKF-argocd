@@ -881,11 +881,11 @@ kubeflow_tools:
     images:
       
       kfpMetadataEnvoy:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/metadata-envoy
+        repository: gcr.io/ml-pipeline/metadata-envoy
         tag: 2.0.0-alpha.7
 
       kfpMetadataWriter:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/metadata-writer
+        repository: gcr.io/ml-pipeline/metadata-writer
         tag: 2.0.0-alpha.7
 
       kfpApiServer:
@@ -893,23 +893,23 @@ kubeflow_tools:
         tag: 2.0.0-alpha.7
 
       kfpPersistenceagent:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/persistenceagent
+        repository: gcr.io/ml-pipeline/persistenceagent
         tag: 2.0.0-alpha.7
 
       kfpScheduledworkflow:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/scheduledworkflow
+        repository: gcr.io/ml-pipeline/scheduledworkflow
         tag: 2.0.0-alpha.7
 
       kfpFrontend:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/frontend
+        repository: gcr.io/ml-pipeline/frontend
         tag: 2.0.0-alpha.7
 
       kfpViewerCrdController:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/viewer-crd-controller
+        repository: gcr.io/ml-pipeline/viewer-crd-controller
         tag: 2.0.0-alpha.7
 
       kfpVisualizationServer:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/visualization-server
+        repository: gcr.io/ml-pipeline/visualization-server
         tag: 2.0.0-alpha.7
 
       tfxMlMetadataStoreServer:

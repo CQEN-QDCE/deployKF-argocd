@@ -119,28 +119,28 @@ images:
     newName: "ghcr.io/deploykf/kubeflow-pipelines/cache-server"
     newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/metadata-envoy
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/metadata-envoy"
+    newName: "gcr.io/ml-pipeline/metadata-envoy"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/metadata-writer
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/metadata-writer"
+    newName: "gcr.io/ml-pipeline/metadata-writer"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/api-server
     newName: "public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/persistenceagent
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/persistenceagent"
+    newName: "gcr.io/ml-pipeline/persistenceagent"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/scheduledworkflow
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/scheduledworkflow"
+    newName: "gcr.io/ml-pipeline/scheduledworkflow"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/frontend
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/frontend"
+    newName: "gcr.io/ml-pipeline/frontend"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/viewer-crd-controller
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/viewer-crd-controller"
+    newName: "gcr.io/ml-pipeline/viewer-crd-controller"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/visualization-server
-    newName: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server"
+    newName: "gcr.io/ml-pipeline/visualization-server"
     newTag: "2.0.0-alpha.7"
 
   ## NOTE: this tag is not aligned to the other KFP images
