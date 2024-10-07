@@ -884,25 +884,25 @@ kubeflow_tools:
         repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server
         tag: 2.0.0-alpha.7
 
-      kfpPersistenceagent:
-        repository: gcr.io/ml-pipeline/persistenceagent
-        tag: 2.0.0-alpha.7
+      # kfpPersistenceagent:
+      #   repository: gcr.io/ml-pipeline/persistenceagent
+      #   tag: 2.0.0-alpha.7
 
       kfpScheduledworkflow:
         repository: gcr.io/ml-pipeline/scheduledworkflow
         tag: 2.0.0-alpha.7
 
-      kfpFrontend:
-        repository: gcr.io/ml-pipeline/frontend
-        tag: 2.0.0-alpha.7
+      # kfpFrontend:
+      #   repository: gcr.io/ml-pipeline/frontend
+      #   tag: 2.0.0-alpha.7
 
       kfpViewerCrdController:
         repository: gcr.io/ml-pipeline/viewer-crd-controller
         tag: 2.0.0-alpha.7
 
-      kfpVisualizationServer:
-        repository: gcr.io/ml-pipeline/visualization-server
-        tag: 2.0.0-alpha.7
+      # kfpVisualizationServer:
+      #   repository: gcr.io/ml-pipeline/visualization-server
+      #   tag: 2.0.0-alpha.7
 
     namespace: kubeflow-argo-workflows
     serviceAccounts:

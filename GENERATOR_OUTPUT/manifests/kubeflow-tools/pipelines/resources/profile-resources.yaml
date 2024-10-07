@@ -445,7 +445,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -538,7 +538,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -672,7 +672,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -765,7 +765,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -899,7 +899,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -992,7 +992,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:2.0.0-alpha.7"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
