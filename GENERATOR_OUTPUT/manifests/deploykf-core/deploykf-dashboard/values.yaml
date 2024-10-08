@@ -7,7 +7,14 @@ deployKF:
   clusterDomain: cluster.local
 
   kubeflow:
+    namespace: kubeflow
     useridHeader: kubeflow-userid
+    notebooks:
+      controller:
+        serviceAccount: notebook-controller-service-account
+    pipelines:
+      frontend:
+        serviceAccount: ml-pipeline-ui
 
   gateway:
     namespace: "deploykf-istio-gateway"
@@ -22,11 +29,11 @@ deployKF:
 centralDashboard:
   image:
     repository: "ghcr.io/deploykf/dashboard"
-    tag: "0.1.0"
+    tag: "0.1.1"
     pullPolicy: "IfNotPresent"
     pullSecret: ""
-    uid: 0
-    gid: 0
+    uid: 1000
+    gid: 1000
 
   ## resource requests/limits for the central-dashboard Pods
   ## - spec for ResourceRequirements:
@@ -50,41 +57,39 @@ centralDashboard:
         icon: book
         link: "/jupyter/"
       - type: item
+        text: TensorBoards
+        icon: assessment
+        link: "/tensorboards/"
+      - type: item
         text: Volumes
         icon: device:storage
         link: "/volumes/"
       - type: item
-        text: Tensorboards
-        icon: assessment
-        link: "/tensorboards/"
-      - type: item
         text: Katib
         icon: kubeflow:katib
         link: "/katib/"
-      - type: item
-        text: KFP - Pipelines
+      - type: section
+        text: Pipelines
         icon: kubeflow:pipeline-centered
-        link: "/pipeline/#/pipelines"
-      - type: item
-        text: KFP - Experiments
-        icon: done-all
-        link: "/pipeline/#/experiments"
-      - type: item
-        text: KFP - Runs
-        icon: maps:directions-run
-        link: "/pipeline/#/runs"
-      - type: item
-        text: KFP - Recurring Runs
-        icon: device:access-alarm
-        link: "/pipeline/#/recurringruns"
-      - type: item
-        text: KFP - Artifacts
-        icon: editor:bubble-chart
-        link: "/pipeline/#/artifacts"
-      - type: item
-        text: KFP - Executions
-        icon: av:play-arrow
-        link: "/pipeline/#/executions"
+        items:
+          - type: item
+            text: Pipelines
+            link: "/pipeline/#/pipelines"
+          - type: item
+            text: Experiments
+            link: "/pipeline/#/experiments"
+          - type: item
+            text: Runs
+            link: "/pipeline/#/runs"
+          - type: item
+            text: Recurring Runs
+            link: "/pipeline/#/recurringruns"
+          - type: item
+            text: Artifacts
+            link: "/pipeline/#/artifacts"
+          - type: item
+            text: Executions
+            link: "/pipeline/#/executions"
 
     ## external links that appear in the sidebar
     ##
@@ -93,7 +98,7 @@ centralDashboard:
         iframe: false
         text: Argo Server
         icon: settings-input-composite
-        link: "https://argo-server.kubeflow-test.asea.cqen.ca"
+        link: "https://argo-server.kubeflow-test.asea.cqen.ca/workflows/{ns}"
 
     ## quick action links that appear in the home page
     ##
@@ -131,11 +136,12 @@ centralDashboard:
 profileController:
   image:
     repository: "kubeflownotebookswg/profile-controller"
-    tag: "v1.7.0"
+    tag: "v1.8.0"
     pullPolicy: "IfNotPresent"
     pullSecret: ""
-    uid: 0
-    gid: 0
+    ## https://github.com/GoogleContainerTools/distroless/blob/761e3d2e151f080ed5c80cd1f26c12d68bd89ad9/common/variables.bzl#L18
+    uid: 65532
+    gid: 65532
 
   ## resource requests/limits for the profile-controller Pods
   ## - spec for ResourceRequirements:
@@ -174,11 +180,12 @@ profileController:
 kfamAPI:
   image:
     repository: "kubeflownotebookswg/kfam"
-    tag: "v1.7.0"
+    tag: "v1.8.0"
     pullPolicy: "IfNotPresent"
     pullSecret: ""
-    uid: 0
-    gid: 0
+    ## https://github.com/GoogleContainerTools/distroless/blob/761e3d2e151f080ed5c80cd1f26c12d68bd89ad9/common/variables.bzl#L18
+    uid: 65532
+    gid: 65532
 
   ## resource requests/limits for the kfam-api Pods
   ## - spec for ResourceRequirements:

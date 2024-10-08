@@ -21,7 +21,7 @@ generate:
   ##
   kubectlImage:
     repository: "docker.io/bitnami/kubectl"
-    tag: "1.26.6-debian-11-r8"
+    tag: "1.26.15-debian-12-r4"
     pullPolicy: "IfNotPresent"
     pullSecret: ""
     uid: 1000
@@ -34,7 +34,7 @@ generate:
 mysql:
   image:
     repository: "docker.io/mysql"
-    tag: "8.0.33"
+    tag: "8.0.37"
     pullPolicy: "IfNotPresent"
     pullSecret: ""
     uid: 999
@@ -86,7 +86,7 @@ mysql:
 
   ## the string content of a config file mounted at `/etc/mysql/conf.d/custom.cnf`
   ##
-  configuration: "[mysqld]\ndisable_log_bin\ndefault_authentication_plugin=mysql_native_password\n"
+  configuration: "[mysqld]\ndisable_log_bin\ndefault_authentication_plugin=mysql_native_password\nlog_error_suppression_list='MY-013360'\n"
 
   ## configs for the "root@localhost" mysql user
   ##

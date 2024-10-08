@@ -30,6 +30,398 @@
 ##  - objectStoreAuth_fromEnv: true
 ################
 ---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-7e2a2d5f-team-1"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-1"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-1"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-d81b8cd1-team-1-prod"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-1-prod"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-1-prod"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-e9da4769-team-fawzi"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-fawzi"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-fawzi"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-8771f08a-team-pierre"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-pierre"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-pierre"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
 apiVersion: kubeflow.org/v1alpha1
 kind: PodDefault
 metadata:
@@ -188,7 +580,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -281,7 +673,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -309,13 +701,17 @@ spec:
               value: ""
             - name: MINIO_SECRET_KEY
               value: ""
+
             ## ================================
             ## S3 - Object Store Configs
             ## ================================
             - name: AWS_REGION
               value: "ca-central-1"
             - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
               value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
             - name: AWS_ACCESS_KEY_ID
               value: ""
             - name: AWS_SECRET_ACCESS_KEY
@@ -371,7 +767,7 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "minio://eks-deploykf-kf-artifact-store/v2/artifacts/team-1"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-1?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -411,7 +807,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -504,7 +900,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -532,13 +928,17 @@ spec:
               value: ""
             - name: MINIO_SECRET_KEY
               value: ""
+
             ## ================================
             ## S3 - Object Store Configs
             ## ================================
             - name: AWS_REGION
               value: "ca-central-1"
             - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
               value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
             - name: AWS_ACCESS_KEY_ID
               value: ""
             - name: AWS_SECRET_ACCESS_KEY
@@ -594,7 +994,7 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "minio://eks-deploykf-kf-artifact-store/v2/artifacts/team-1-prod"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-1-prod?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -634,7 +1034,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -727,7 +1127,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -755,13 +1155,17 @@ spec:
               value: ""
             - name: MINIO_SECRET_KEY
               value: ""
+
             ## ================================
             ## S3 - Object Store Configs
             ## ================================
             - name: AWS_REGION
               value: "ca-central-1"
             - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
               value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
             - name: AWS_ACCESS_KEY_ID
               value: ""
             - name: AWS_SECRET_ACCESS_KEY
@@ -817,7 +1221,7 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "minio://eks-deploykf-kf-artifact-store/v2/artifacts/team-fawzi"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-fawzi?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -857,7 +1261,7 @@ spec:
       containers:
         - name: ml-pipeline-visualizationserver
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/visualization-server:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8888
@@ -950,7 +1354,7 @@ spec:
       containers:
         - name: ml-pipeline-ui-artifact
           ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
-          image: "gcr.io/ml-pipeline/frontend:$(kfp-app-version)"
+          image: "ghcr.io/deploykf/kubeflow-pipelines/frontend:2.1.0-deploykf.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -978,13 +1382,17 @@ spec:
               value: ""
             - name: MINIO_SECRET_KEY
               value: ""
+
             ## ================================
             ## S3 - Object Store Configs
             ## ================================
             - name: AWS_REGION
               value: "ca-central-1"
             - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
               value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
             - name: AWS_ACCESS_KEY_ID
               value: ""
             - name: AWS_SECRET_ACCESS_KEY
@@ -1040,4 +1448,4 @@ metadata:
     argocd.argoproj.io/compare-options: ""
     argocd.argoproj.io/sync-options: ""
 data:
-  defaultPipelineRoot: "minio://eks-deploykf-kf-artifact-store/v2/artifacts/team-pierre"
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-pierre?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"

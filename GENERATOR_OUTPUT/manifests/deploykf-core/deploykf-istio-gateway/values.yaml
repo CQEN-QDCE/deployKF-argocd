@@ -22,7 +22,7 @@ deployKF:
     pipelines:
       enabled: true
       kfpV2:
-        defaultPipelineRoot: "minio://{bucket_name}/v2/artifacts/{profile_name}"
+        defaultPipelineRoot: "{scheme}://{bucket_name}/v2/artifacts/{profile_name}?region={bucket_region}&endpoint={endpoint}&disableSSL={not_use_ssl}&s3ForcePathStyle=true"
       cache:
         namespaceRedirect: true
     notebooks:
