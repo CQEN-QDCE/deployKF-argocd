@@ -902,7 +902,7 @@ kubeflow_tools:
 
       kfpApiServer:
         repository: gcr.io/ml-pipeline/api-server
-        tag: ~
+        tag: 2.0.0-alpha.7
 
       # kfpApiServer:
       #   repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server

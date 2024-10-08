@@ -126,6 +126,7 @@ images:
     newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/api-server
     newName: "gcr.io/ml-pipeline/api-server"
+    newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/persistenceagent
     newName: "ghcr.io/deploykf/kubeflow-pipelines/persistenceagent"
     newTag: "2.1.0-deploykf.0"
