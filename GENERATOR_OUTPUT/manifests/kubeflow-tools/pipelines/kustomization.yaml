@@ -137,8 +137,8 @@ images:
     newName: "gcr.io/ml-pipeline/frontend"
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/viewer-crd-controller
-    newName: "gcr.io/ml-pipeline/viewer-crd-controller"
-    newTag: "2.0.0-alpha.7"
+    newName: "ghcr.io/deploykf/kubeflow-pipelines/viewer-crd-controller"
+    newTag: "2.1.0-deploykf.0"
   - name: gcr.io/ml-pipeline/visualization-server
     newName: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server"
     newTag: "2.1.0-deploykf.0"

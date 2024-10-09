@@ -904,9 +904,9 @@ kubeflow_tools:
         repository: gcr.io/ml-pipeline/api-server
         tag: 2.0.0-alpha.7
       
-      kfpViewerCrdController:
-        repository: gcr.io/ml-pipeline/viewer-crd-controller
-        tag: 2.0.0-alpha.7
+      # kfpViewerCrdController:
+      #   repository: gcr.io/ml-pipeline/viewer-crd-controller
+      #   tag: 2.0.0-alpha.7
 
       # kfpApiServer:
       #   repository: public.ecr.aws/kubeflow-on-aws/ml-pipeline/api-server
