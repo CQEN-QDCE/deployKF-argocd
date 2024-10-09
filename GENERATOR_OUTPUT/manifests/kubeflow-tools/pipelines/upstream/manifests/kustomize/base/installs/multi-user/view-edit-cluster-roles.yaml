@@ -47,7 +47,6 @@ rules:
   - pipelines/versions
   verbs:
   - create
-  - list
   - delete
   - update
 - apiGroups:
@@ -57,7 +56,6 @@ rules:
   verbs:
   - archive
   - create
-  - list
   - delete
   - unarchive
 - apiGroups:
@@ -68,7 +66,6 @@ rules:
   - archive
   - create
   - delete
-  - list
   - retry
   - terminate
   - unarchive
@@ -80,7 +77,6 @@ rules:
   - jobs
   verbs:
   - create
-  - list
   - delete
   - disable
   - enable
