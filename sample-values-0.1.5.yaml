@@ -928,9 +928,9 @@ kubeflow_tools:
       #   repository: gcr.io/ml-pipeline/viewer-crd-controller
       #   tag: 2.0.0-alpha.7
 
-      kfpVisualizationServer:
-        repository: ghcr.io/deploykf/kubeflow-pipelines/visualization-server
-        tag: 2.0.0-alpha.7
+      # kfpVisualizationServer:
+      #   repository: ghcr.io/deploykf/kubeflow-pipelines/visualization-server
+      #   tag: 2.0.0-alpha.7
 
       # tfxMlMetadataStoreServer:
       #   repository: ghcr.io/deploykf/ml_metadata_store_server

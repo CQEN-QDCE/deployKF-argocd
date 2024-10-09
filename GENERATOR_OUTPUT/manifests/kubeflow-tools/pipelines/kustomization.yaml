@@ -141,7 +141,7 @@ images:
     newTag: "2.0.0-alpha.7"
   - name: gcr.io/ml-pipeline/visualization-server
     newName: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server"
-    newTag: "2.0.0-alpha.7"
+    newTag: "2.1.0-deploykf.0"
 
   ## NOTE: this tag is not aligned to the other KFP images
   - name: gcr.io/tfx-oss-public/ml_metadata_store_server
