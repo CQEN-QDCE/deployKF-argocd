@@ -677,11 +677,11 @@ kubeflow_tools:
       ##
       imageGroupOne:
         ## the default container image
-        value: kubeflownotebookswg/codeserver-python:v1.9.0
+        value: kubeflownotebookswg/codeserver-python:v1.7.0
 
         ## the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/codeserver-python:v1.9.0
+          - kubeflownotebookswg/codeserver-python:v1.7.0
 
       ## RStudio-like Container Images (Group 2)
       ##  - the `imageGroupTwo` section is used for "RStudio-like" apps whose
@@ -700,6 +700,8 @@ kubeflow_tools:
         ## the list of available container images in the dropdown
         options:
           - kubeflownotebookswg/rstudio-tidyverse:v1.9.0
+
+      notebooks.kubeflow.org/http-rewrite-uri: "/"
 
       ## CPU Resources
       ##
