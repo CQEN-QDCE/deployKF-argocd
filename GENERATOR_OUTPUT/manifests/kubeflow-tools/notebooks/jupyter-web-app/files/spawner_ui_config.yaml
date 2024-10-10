@@ -57,8 +57,6 @@ spawnerFormDefaults:
     limitFactor: "1.2"
     readOnly: false
     value: 1.0Gi
-  notebooks.kubeflow.org/http-headers-request-set: /
-  notebooks.kubeflow.org/http-rewrite-uri: /
   shm:
     readOnly: false
     value: true

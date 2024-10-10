@@ -701,8 +701,8 @@ kubeflow_tools:
         options:
           - kubeflownotebookswg/rstudio-tidyverse:v1.7.0
 
-      notebooks.kubeflow.org/http-rewrite-uri: "/"
-      notebooks.kubeflow.org/http-headers-request-set: "/"
+      # notebooks.kubeflow.org/http-rewrite-uri: "/"
+      # notebooks.kubeflow.org/http-headers-request-set: "/"
 
       ## CPU Resources
       ##
