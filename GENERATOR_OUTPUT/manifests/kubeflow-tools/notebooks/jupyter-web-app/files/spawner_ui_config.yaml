@@ -48,8 +48,8 @@ spawnerFormDefaults:
     value: kubeflownotebookswg/codeserver-python:v1.7.0
   imageGroupTwo:
     options:
-      - kubeflownotebookswg/rstudio-tidyverse:v1.9.0
-    value: kubeflownotebookswg/rstudio-tidyverse:v1.9.0
+      - kubeflownotebookswg/rstudio-tidyverse:v1.7.0
+    value: kubeflownotebookswg/rstudio-tidyverse:v1.7.0
   imagePullPolicy:
     readOnly: false
     value: IfNotPresent
@@ -57,6 +57,7 @@ spawnerFormDefaults:
     limitFactor: "1.2"
     readOnly: false
     value: 1.0Gi
+  notebooks.kubeflow.org/http-headers-request-set: /
   notebooks.kubeflow.org/http-rewrite-uri: /
   shm:
     readOnly: false
