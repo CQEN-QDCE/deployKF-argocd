@@ -2,7 +2,7 @@ spawnerFormDefaults:
   affinityConfig:
     options: []
     readOnly: false
-    value: aws.amazon.com/neuron
+    value: amd.com/gpu
   allowCustomImage: true
   configurations:
     readOnly: false
