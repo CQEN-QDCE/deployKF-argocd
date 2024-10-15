@@ -377,28 +377,13 @@ deploykf_core:
             existingSecretAccessKeyKey: "access_key"
             existingSecretSecretKeyKey: "secret_key"
 
-    # users:
-
-    #   - id: user-1
-    #     email: "mohamedfawzi.touati@mcn.gouv.qc.ca"
-    
-    #   - id: user-2
-    #     email: "pierre.jiji@mcn.gouv.qc.ca"
-
-    #   - id: user-3
-    #     email: "kami.rousseau@mcn.gouv.qc.ca"
-
     ## user entities
     ##  - a list of users that can be referenced when defining profile members
     ##  - each element is a map with the following keys:
     ##     - `id`: a unique identifier for the user
     ##     - `email`: the email of the user (must exactly match the email from your identity provider)
     ##
-    #users:
-    #  - id: user-1
-    #    email: "user1@example.com"
-    #  - id: user-2
-    #    email: "user2@example.com"
+
 
     ## group entities
     ##  - a list of groups that can be referenced when defining profile members
@@ -406,23 +391,7 @@ deploykf_core:
     ##     - `id`: a unique identifier for the group
     ##     - `users`: a list of user IDs that are members of the group
     ##
-    #groups:
-    #  - id: team-1
-    #    users:
-    #      - user-1
-    #      - user-2
 
-    # groups:
-    #   - id: team-1--admins
-    #     users:
-    #       - user-1
-    #       - user-2
-
-    #   - id: team-1--users
-    #     users:
-    #       - user-1
-    #       - user-2
-    #       - user-3
 
 
     ## profile definitions
@@ -448,63 +417,6 @@ deploykf_core:
     ##                 - `existingSecretAccessKeyKey`: the key within the secret that contains the access-key (default: "access_key")
     ##                 - `existingSecretSecretKeyKey`: the key within the secret that contains the secret-key (default: "secret_key")
     ##
-    #profiles:
-    #  - name: team-1
-    #    members:
-    #      - group: team-1
-    #        access:
-    #          role: edit
-    #          notebooksAccess: true
-    #
-    #  - name: team-1-prod
-    #    members:
-    #      - group: team-1
-    #        access:
-    #          role: view
-    # #          notebooksAccess: false
-    # profiles:
-    #  - name: team-fawzi
-    #    members:
-    #      - group: team-1--admins
-    #        access:
-    #          role: edit
-    #          notebooksAccess: true
-    #    plugins:
-    #       - kind: AwsIamForServiceAccount
-    #         spec:
-    #           awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
-    #           AnnotateOnly: true
-
-    #  - name: team-pierre
-    #    members:
-    #      - group: team-1--admins
-    #        access:
-    #          role: edit
-    #          notebooksAccess: true
-    #    plugins:
-    #       - kind: AwsIamForServiceAccount
-    #         spec:
-    #           awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
-    #           AnnotateOnly: true
-
-    #  - name: team-1
-    #    members:
-    #      - group: team-1--admins
-    #        access:
-    #          role: edit
-    #          notebooksAccess: true
-    #    plugins:
-    #       - kind: AwsIamForServiceAccount
-    #         spec:
-    #           awsIamRole: arn:aws:iam::131485263174:role/team-1-role
-    #           AnnotateOnly: true
-    
-    #  - name: team-1-prod
-    #    members:
-    #      - group: team-1--admins
-    #        access:
-    #          role: edit
-    #          notebooksAccess: false
     
     
 
