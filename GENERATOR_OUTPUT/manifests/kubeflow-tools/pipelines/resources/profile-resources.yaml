@@ -22,7 +22,21 @@
 ##  - objectStoreAuth_existingSecretSecretKeyKey: 
 ##  - objectStoreAuth_fromEnv: true
 ##
+## PROFILE: team-fawzi-1
+##  - objectStoreAuth_existingSecret: 
+##  - objectStoreAuth_existingSecretAccessKeyKey: 
+##  - objectStoreAuth_existingSecretNamespace: 
+##  - objectStoreAuth_existingSecretSecretKeyKey: 
+##  - objectStoreAuth_fromEnv: true
+##
 ## PROFILE: team-pierre
+##  - objectStoreAuth_existingSecret: 
+##  - objectStoreAuth_existingSecretAccessKeyKey: 
+##  - objectStoreAuth_existingSecretNamespace: 
+##  - objectStoreAuth_existingSecretSecretKeyKey: 
+##  - objectStoreAuth_fromEnv: true
+##
+## PROFILE: team-pierre-1
 ##  - objectStoreAuth_existingSecret: 
 ##  - objectStoreAuth_existingSecretAccessKeyKey: 
 ##  - objectStoreAuth_existingSecretNamespace: 
@@ -328,6 +342,104 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-d165dcd0-team-fawzi-1"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-fawzi-1"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-fawzi-1"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
   name: "patch-kfp-v2-pods-8771f08a-team-pierre"
 spec:
   background: false
@@ -405,6 +517,104 @@ spec:
                 - Pod
               namespaces:
                 - "team-pierre"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/kfp_sdk_version: "1.*"
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              ## NOTE: this is needed even though we set `V2_LAUNCHER_IMAGE` on `Deployment/ml-pipeline`
+              ##       because runs in V2_COMPATIBLE mode still use their hard-coded launcher image:
+              ##       https://github.com/kubeflow/pipelines/issues/10229#issuecomment-2067264813
+              - (name): "kfp-launcher"
+                image: "ghcr.io/deploykf/kubeflow-pipelines/kfp-launcher:1.8.22-deploykf.0"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  ## the max name length is 63, so to avoid collisions we include part of the SHA256 of the profile name
+  name: "patch-kfp-v2-pods-ffdae4f6-team-pierre-1"
+spec:
+  background: false
+  rules:
+    ## ================================================================
+    ## MUTATE - Patch KFP v2 Workflow Pods
+    ## ================================================================
+    - name: patch-v2-container-env
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-pierre-1"
+              selector:
+                matchLabels:
+                  pipelines.kubeflow.org/v2_component: "true"
+                  workflows.argoproj.io/workflow: "*"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            initContainers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+            containers:
+              - (name): "*"
+                env:
+                  ## ================================
+                  ## ml-pipeline host and port
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ## ================================
+                  - name: ML_PIPELINE_SERVICE_HOST
+                    value: "ml-pipeline.kubeflow.svc.cluster.local"
+                  - name: ML_PIPELINE_SERVICE_PORT_GRPC
+                    value: "8887"
+
+                  ## ================================
+                  ## object store auth
+                  ##  - https://github.com/kubeflow/pipelines/issues/9689
+                  ##  - https://gocloud.dev/howto/blob/#s3-compatible
+                  ## ================================
+                  - name: AWS_ACCESS_KEY_ID
+                    value: ""
+                  - name: AWS_SECRET_ACCESS_KEY
+                    value: ""
+    ## ================================================================
+    ## MUTATE - Patch KFP v2-compatible Launcher Image
+    ## ================================================================
+    - name: patch-v2-compatible-launcher-image
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "team-pierre-1"
               selector:
                 matchLabels:
                   pipelines.kubeflow.org/kfp_sdk_version: "1.*"
@@ -516,7 +726,67 @@ apiVersion: kubeflow.org/v1alpha1
 kind: PodDefault
 metadata:
   name: kubeflow-pipelines-api-token
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  desc: "Mount a serviceAccountToken to authenticate with Kubeflow Pipelines API"
+  env:
+    - name: KF_PIPELINES_SA_TOKEN_PATH
+      value: "/var/run/secrets/ml-pipeline/token"
+  selector:
+    matchLabels:
+      kubeflow-pipelines-api-token: "true"
+  volumeMounts:
+    - mountPath: "/var/run/secrets/ml-pipeline"
+      name: volume-ml-pipeline-token
+      readOnly: true
+  volumes:
+    - name: volume-ml-pipeline-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: pipelines.kubeflow.org
+              expirationSeconds: 7200
+              path: token
+---
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: kubeflow-pipelines-api-token
   namespace: "team-pierre"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  desc: "Mount a serviceAccountToken to authenticate with Kubeflow Pipelines API"
+  env:
+    - name: KF_PIPELINES_SA_TOKEN_PATH
+      value: "/var/run/secrets/ml-pipeline/token"
+  selector:
+    matchLabels:
+      kubeflow-pipelines-api-token: "true"
+  volumeMounts:
+    - mountPath: "/var/run/secrets/ml-pipeline"
+      name: volume-ml-pipeline-token
+      readOnly: true
+  volumes:
+    - name: volume-ml-pipeline-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: pipelines.kubeflow.org
+              expirationSeconds: 7200
+              path: token
+---
+apiVersion: kubeflow.org/v1alpha1
+kind: PodDefault
+metadata:
+  name: kubeflow-pipelines-api-token
+  namespace: "team-pierre-1"
   annotations:
     ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
     argocd.argoproj.io/compare-options: ""
@@ -1227,6 +1497,233 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: metadata-grpc-configmap
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  METADATA_GRPC_SERVICE_HOST: "metadata-grpc-service.kubeflow"
+  METADATA_GRPC_SERVICE_PORT: "8080"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+  labels:
+    app: ml-pipeline-visualizationserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-pipeline-visualizationserver
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline-visualizationserver
+    spec:
+      serviceAccountName: default-editor
+      containers:
+        - name: ml-pipeline-visualizationserver
+          ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8888
+          resources:
+            requests:
+              cpu: 50m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  host: ml-pipeline-visualizationserver
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    matchLabels:
+      app: ml-pipeline-visualizationserver
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/kubeflow/sa/ml-pipeline
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    app: ml-pipeline-visualizationserver
+  ports:
+    - name: http
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-ui-artifact
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+  labels:
+    app: ml-pipeline-ui-artifact
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-pipeline-ui-artifact
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline-ui-artifact
+    spec:
+      ## NOTE: we use 'default-editor' so this pod has the same access as workflow pods when using "AWS IRSA" or "GCP Workload Identity" plugins
+      serviceAccountName: default-editor
+      securityContext:
+        ## NOTE: this is important for AWS IRSA
+        fsGroup: 65534
+      containers:
+        - name: ml-pipeline-ui-artifact
+          ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
+          image: "gcr.io/ml-pipeline/frontend:2.0.0-alpha.7"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 10m
+              memory: 70Mi
+            limits:
+              cpu: 100m
+              memory: 500Mi
+          env:
+            ## ================================
+            ## Minio - Object Store Configs
+            ## ================================
+            - name: MINIO_NAMESPACE
+              ## NOTE: must be empty, or kubeflow pipelines will attempt to append the namespace to MINIO_HOST
+              value: ""
+            - name: MINIO_HOST
+              value: "s3.ca-central-1.amazonaws.com"
+            - name: MINIO_PORT
+              value: ""
+            - name: MINIO_SSL
+              value: "true"
+            - name: MINIO_ACCESS_KEY
+              value: ""
+            - name: MINIO_SECRET_KEY
+              value: ""
+
+            ## ================================
+            ## S3 - Object Store Configs
+            ## ================================
+            - name: AWS_REGION
+              value: "ca-central-1"
+            - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
+              value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
+            - name: AWS_ACCESS_KEY_ID
+              value: ""
+            - name: AWS_SECRET_ACCESS_KEY
+              value: ""
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-pipeline-ui-artifact
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    app: ml-pipeline-ui-artifact
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-repositories
+  namespace: "team-fawzi-1"
+  annotations:
+    workflows.argoproj.io/default-artifact-repository: default-v1
+    
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  default-v1: |
+    archiveLogs: true
+    s3:
+      endpoint: "s3.ca-central-1.amazonaws.com"
+      insecure: false
+      bucket: "eks-deploykf-kf-artifact-store"
+      region: "ca-central-1"
+      keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
+      useSDKCreds: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kfp-launcher
+  namespace: "team-fawzi-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-fawzi-1?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metadata-grpc-configmap
   namespace: "team-pierre"
   annotations:
     ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
@@ -1449,3 +1946,230 @@ metadata:
     argocd.argoproj.io/sync-options: ""
 data:
   defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-pierre?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metadata-grpc-configmap
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  METADATA_GRPC_SERVICE_HOST: "metadata-grpc-service.kubeflow"
+  METADATA_GRPC_SERVICE_PORT: "8080"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+  labels:
+    app: ml-pipeline-visualizationserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-pipeline-visualizationserver
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline-visualizationserver
+    spec:
+      serviceAccountName: default-editor
+      containers:
+        - name: ml-pipeline-visualizationserver
+          ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
+          image: "ghcr.io/deploykf/kubeflow-pipelines/visualization-server:2.1.0-deploykf.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8888
+          resources:
+            requests:
+              cpu: 50m
+              memory: 200Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  host: ml-pipeline-visualizationserver
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    matchLabels:
+      app: ml-pipeline-visualizationserver
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/kubeflow/sa/ml-pipeline
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-pipeline-visualizationserver
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    app: ml-pipeline-visualizationserver
+  ports:
+    - name: http
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-ui-artifact
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+  labels:
+    app: ml-pipeline-ui-artifact
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-pipeline-ui-artifact
+  template:
+    metadata:
+      labels:
+        app: ml-pipeline-ui-artifact
+    spec:
+      ## NOTE: we use 'default-editor' so this pod has the same access as workflow pods when using "AWS IRSA" or "GCP Workload Identity" plugins
+      serviceAccountName: default-editor
+      securityContext:
+        ## NOTE: this is important for AWS IRSA
+        fsGroup: 65534
+      containers:
+        - name: ml-pipeline-ui-artifact
+          ## NOTE: $(kfp-app-version) is a Kustomize variable which is replaced during Kustomize rendering
+          image: "gcr.io/ml-pipeline/frontend:2.0.0-alpha.7"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 10m
+              memory: 70Mi
+            limits:
+              cpu: 100m
+              memory: 500Mi
+          env:
+            ## ================================
+            ## Minio - Object Store Configs
+            ## ================================
+            - name: MINIO_NAMESPACE
+              ## NOTE: must be empty, or kubeflow pipelines will attempt to append the namespace to MINIO_HOST
+              value: ""
+            - name: MINIO_HOST
+              value: "s3.ca-central-1.amazonaws.com"
+            - name: MINIO_PORT
+              value: ""
+            - name: MINIO_SSL
+              value: "true"
+            - name: MINIO_ACCESS_KEY
+              value: ""
+            - name: MINIO_SECRET_KEY
+              value: ""
+
+            ## ================================
+            ## S3 - Object Store Configs
+            ## ================================
+            - name: AWS_REGION
+              value: "ca-central-1"
+            - name: AWS_S3_ENDPOINT
+              ## NOTE: we use hostname only, KFP doesn't allow ports in the s3 endpoint config
+              value: "s3.ca-central-1.amazonaws.com"
+            - name: AWS_SSL
+              value: "true"
+            - name: AWS_ACCESS_KEY_ID
+              value: ""
+            - name: AWS_SECRET_ACCESS_KEY
+              value: ""
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-pipeline-ui-artifact
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+spec:
+  selector:
+    app: ml-pipeline-ui-artifact
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-repositories
+  namespace: "team-pierre-1"
+  annotations:
+    workflows.argoproj.io/default-artifact-repository: default-v1
+    
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  default-v1: |
+    archiveLogs: true
+    s3:
+      endpoint: "s3.ca-central-1.amazonaws.com"
+      insecure: false
+      bucket: "eks-deploykf-kf-artifact-store"
+      region: "ca-central-1"
+      keyFormat: "artifacts/{{ workflow.namespace }}/{{ workflow.name }}/{{ workflow.creationTimestamp.Y }}/{{ workflow.creationTimestamp.m }}/{{ workflow.creationTimestamp.d }}/{{ pod.name }}"
+      useSDKCreds: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kfp-launcher
+  namespace: "team-pierre-1"
+  annotations:
+    ## NOTE: previously we used Kyverno to create this resource, the old values of these annotations would make ArgoCD ignore it
+    argocd.argoproj.io/compare-options: ""
+    argocd.argoproj.io/sync-options: ""
+data:
+  defaultPipelineRoot: "s3://eks-deploykf-kf-artifact-store/v2/artifacts/team-pierre-1?region=ca-central-1&endpoint=s3.ca-central-1.amazonaws.com&disableSSL=false&s3ForcePathStyle=true"
