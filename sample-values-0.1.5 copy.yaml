@@ -344,7 +344,11 @@ deploykf_core:
       ##  - override these defaults for a specific profile by setting `plugins` in that profile,
       ##    to disable all plugins for that profile, set an empty list `[]`
       ##
-      plugins: {}
+      plugins: 
+        - kind: AwsIamForServiceAccount
+          spec:
+            awsIamRole: "arn:aws:iam::131485263174:role/kubeflow-pipelines-backend"
+            AnnotateOnly: true
 
       ## the default resource quota for profiles, when not explicitly specified
       ##  - spec for ResourceQuotaSpec:
@@ -360,7 +364,59 @@ deploykf_core:
 
         ## the default Kubeflow Pipelines configs for profiles
         ##
-        kubeflowPipelines: {}
+        kubeflowPipelines:
+          
+
+          ## the default Kubeflow Pipelines object store auth configs for profiles
+          ##  - the behaviour of these configs depends on `kubeflow_tools.kubeflow_pipelines.objectStore`
+          ##  - override these defaults for a specific profile by setting `tools.kubeflowPipelines.objectStoreAuth` in that profile
+          ##
+          objectStoreAuth:
+            existingSecret: "kubeflow-pipelines--profile-object-store-auth--{profile_name}"
+            existingSecretNamespace: ""
+            existingSecretAccessKeyKey: "access_key"
+            existingSecretSecretKeyKey: "secret_key"
+
+    ## user entities
+    ##  - a list of users that can be referenced when defining profile members
+    ##  - each element is a map with the following keys:
+    ##     - `id`: a unique identifier for the user
+    ##     - `email`: the email of the user (must exactly match the email from your identity provider)
+    ##
+
+
+    ## group entities
+    ##  - a list of groups that can be referenced when defining profile members
+    ##  - each element is a map with the following keys:
+    ##     - `id`: a unique identifier for the group
+    ##     - `users`: a list of user IDs that are members of the group
+    ##
+
+
+
+    ## profile definitions
+    ##  - a list of profile definitions to be generated
+    ##  - each element is a map with the following keys:
+    ##     - `name`: the name of the profile (must be unique)
+    ##               note, the name of a profile is also its namespace name
+    ##     - `members`: a list of members and their access to this profile (default: [])
+    ##                  note, if a user appears in multiple memberships, the most permissive access is used
+    ##          each element is a map with the following keys:
+    ##           - `user`: the ID of a user (mutually exclusive with `group`)
+    ##           - `group`: the ID of a group (mutually exclusive with `user`)
+    ##           - `access`: a map with configs for this member's access to the profile:
+    ##               - `role`: the Kubernetes RBAC role to bind to the user (default: `profileDefaults.memberAccess.role`)
+    ##               - `notebooksAccess`: if the user can ~connect~ to kubeflow notebooks (default: `profileDefaults.memberAccess.notebooksAccess`)
+    ##     - `plugins`: the list of plugins for this profile (default: `profileDefaults.plugins`)
+    ##     - `resourceQuotaSpec`: the resource quota for this profile (default: `profileDefaults.resourceQuotaSpec`)
+    ##     - `tools`: a map with configs for tools:
+    ##         - `kubeflowPipelines`: a map with configs for Kubeflow Pipelines:
+    ##             - `objectStoreAuth`: a map with configs for object store auth (default: `profileDefaults.tools.kubeflowPipelines.objectStoreAuth`)
+    ##                 - `existingSecret`: the name of an existing kubernetes secret
+    ##                 - `existingSecretNamespace`: the namespace containing the kubernetes secret (default: namespace of this profile)
+    ##                 - `existingSecretAccessKeyKey`: the key within the secret that contains the access-key (default: "access_key")
+    ##                 - `existingSecretSecretKeyKey`: the key within the secret that contains the secret-key (default: "secret_key")
+    ##
     
     
 

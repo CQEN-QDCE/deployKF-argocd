@@ -72,7 +72,7 @@ profileDefaults:
 
   ## the default list of plugins for profiles, when not explicitly specified
   ##
-  plugins: [{"kind":"AwsIamForServiceAccount","spec":{"AnnotateOnly":true,"awsIamRole":"arn:aws:iam::131485263174:role/kubeflow-pipelines-backend"}}]
+  plugins: {}
 
   ## the default resource quota for profiles, when not explicitly specified
   ##  - spec for ResourceQuotaSpec:
