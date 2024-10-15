@@ -4,17 +4,6 @@
 ## --------------------------------------------------------------------------------
 deploykf_core:
 
-  ## --------------------------------------
-  ##             deploykf-auth
-  ## --------------------------------------
-
-  ## --------------------------------------
-  ##        deploykf-istio-gateway
-  ## --------------------------------------
-
-  ## --------------------------------------
-  ##      deploykf-profiles-generator
-  ## --------------------------------------
   deploykf_profiles_generator:
 
     ## profile defaults
@@ -40,18 +29,6 @@ deploykf_core:
         kubeflowPipelines:
           {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
 
-          ## the default Kubeflow Pipelines object store auth configs for profiles
-          ##  - https://www.deploykf.org/guides/external/object-store/#connect-an-external-object-store
-          ##  - the matching secret is CLONED into the profile namespace for use by Kubeflow Pipelines
-          ##  - you will need to manually create the secrets you reference here
-          ##  - you can have all profiles share the same secret, by removing '{profile_name}' from the name
-          ##  - you may override these defaults for a specific profile definition
-          ##
-          #objectStoreAuth:
-          #  existingSecret: "kubeflow-pipelines--profile-object-store-auth--{profile_name}"
-          #  existingSecretNamespace: "my-namespace-with-the-secrets"
-          #  existingSecretAccessKeyKey: "access_key"
-          #  existingSecretSecretKeyKey: "secret_key"
     users:
 
       - id: user-1
@@ -154,183 +131,23 @@ deploykf_core:
              role: edit
              notebooksAccess: false
     
+     - name: team-test
+       members:
+         - group: team-1--admins
+           access:
+             role: edit
+             notebooksAccess: true
+       plugins:
+          - kind: AwsIamForServiceAccount
+            spec:
+              awsIamRole: arn:aws:iam::131485263174:role/team-1-role
+              AnnotateOnly: true
+    
+     - name: team-1-prod
+       members:
+         - group: team-1--admins
+           access:
+             role: edit
+             notebooksAccess: false
+    
 
-## --------------------------------------------------------------------------------
-##                                   deploykf-opt
-## --------------------------------------------------------------------------------
-deploykf_opt:
-
-  ## --------------------------------------
-  ##            deploykf-minio
-  ## --------------------------------------
-  deploykf_minio:
-    {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-    ## if an embedded MinIO instance will be deployed
-    ##  - https://www.deploykf.org/guides/tools/external-object-store/
-    ##
-    #enabled: false
-
-  ## --------------------------------------
-  ##            deploykf-mysql
-  ## --------------------------------------
-  deploykf_mysql:
-    {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-    ## if an embedded MySQL instance will be deployed
-    ##  - https://www.deploykf.org/guides/tools/external-mysql/
-    ##
-    #enabled: false
-
-## --------------------------------------------------------------------------------
-##                                  kubeflow-tools
-## --------------------------------------------------------------------------------
-kubeflow_tools:
-
-  ## --------------------------------------
-  ##                 katib
-  ## --------------------------------------
-  katib:
-    {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-    ## mysql connection configs
-    ##  - https://www.deploykf.org/guides/external/mysql/#3-connect-katib
-    ##  - we recommend storing credentials in a Secret, rather than in plaintext
-    ##
-    #mysql:
-    #  useExternal: true
-    #  host: "mysql.example.com"
-    #  port: 3306
-    #  auth:
-    #    #username: kubeflow
-    #    #password: password
-    #    existingSecret: "katib--mysql-auth" # <-- YOUR EXISTING SECRET, IN 'kubeflow' NAMESPACE
-    #    existingSecretUsernameKey: "username"
-    #    existingSecretPasswordKey: "password"
-
-    ## mysql database name
-    ##  - you must create this database in your MySQL instance
-    ##
-    #mysqlDatabase: katib
-
-  ## --------------------------------------
-  ##               notebooks
-  ## --------------------------------------
-  notebooks:
-
-    ## notebook spawner configs
-    ##  - https://www.deploykf.org/guides/tools/kubeflow-notebooks/
-    ##
-    spawnerFormDefaults:
-      {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-      ## Jupyter-like Container Images
-      ##  - https://www.deploykf.org/guides/tools/kubeflow-notebooks/#container-images
-      ##
-      #image:
-      #  ## the default container image
-      #  value: kubeflownotebookswg/jupyter-scipy:v1.7.0
-      #
-      #  ## the list of available container images in the dropdown
-      #  options:
-      #    - kubeflownotebookswg/jupyter-scipy:v1.7.0
-      #    - kubeflownotebookswg/jupyter-pytorch-full:v1.7.0
-      #    - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.7.0
-      #    - kubeflownotebookswg/jupyter-tensorflow-full:v1.7.0
-      #    - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.7.0
-
-      ## VSCode-like Container Images (Group 1)
-      ##  - https://www.deploykf.org/guides/tools/kubeflow-notebooks/#container-images
-      ##
-      #imageGroupOne:
-      #  ## the default container image
-      #  value: kubeflownotebookswg/codeserver-python:v1.7.0
-      #
-      #  ## the list of available container images in the dropdown
-      #  options:
-      #    - kubeflownotebookswg/codeserver-python:v1.7.0
-
-      ## RStudio-like Container Images (Group 2)
-      ##  - https://www.deploykf.org/guides/tools/kubeflow-notebooks/#container-images
-      ##
-      #imageGroupTwo:
-      #  ## the default container image
-      #  value: kubeflownotebookswg/rstudio-tidyverse:v1.7.0
-      #
-      #  ## the list of available container images in the dropdown
-      #  options:
-      #    - kubeflownotebookswg/rstudio-tidyverse:v1.7.0
-
-  ## --------------------------------------
-  ##               pipelines
-  ## --------------------------------------
-  pipelines:
-
-    ## storage bucket configs
-    ##
-    #bucket:
-    #  name: my-bucket-name
-    #  region: ""
-
-    ## object store configs
-    ##  - https://www.deploykf.org/guides/external/object-store/#connect-an-external-object-store
-    ##
-    objectStore:
-      {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-      ## object store connection configs
-      ##
-      #useExternal: true
-      #host: s3.amazonaws.com
-      #port: ""
-      #useSSL: true
-
-      ## object store auth configs
-      ##  - we recommend storing credentials in a Secret, rather than in plaintext
-      ##  - this auth is used by the backend, in-profile auth is configured by 'deploykf-profiles-generator'
-      ##
-      #auth:
-      #  fromEnv: false
-      #  #accessKey: my-access-key
-      #  #secretKey: my-secret-key
-      #  existingSecret: "kubeflow-pipelines--object-store-auth" # <-- YOUR EXISTING SECRET, IN 'kubeflow' NAMESPACE
-      #  existingSecretAccessKeyKey: "AWS_ACCESS_KEY_ID"
-      #  existingSecretSecretKeyKey: "AWS_SECRET_ACCESS_KEY"
-
-    ## mysql connection configs
-    ##  - https://www.deploykf.org/guides/external/mysql/#4-connect-kubeflow-pipelines
-    ##  - we recommend storing credentials in a Secret, rather than in plaintext
-    ##
-    #mysql:
-    #  useExternal: true
-    #  host: "mysql.example.com"
-    #  port: 3306
-    #  auth:
-    #    #username: kubeflow
-    #    #password: password
-    #    existingSecret: "kubeflow-pipelines--mysql-auth" # <-- YOUR EXISTING SECRET, IN 'kubeflow' NAMESPACE
-    #    existingSecretUsernameKey: "username"
-    #    existingSecretPasswordKey: "password"
-
-    ## mysql database names
-    ##  - you must create these databases in your MySQL instance
-    ##
-    #mysqlDatabases:
-    #  cacheDatabase: kfp_cache
-    #  metadataDatabase: kfp_metadata
-    #  pipelinesDatabase: kfp_pipelines
-
-    ## configs specific to Kubeflow Pipelines v2
-    ##
-    kfpV2:
-      {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-  ## profile resource generation configs
-  ##
-  profileResourceGeneration:
-    {} # <-- REMOVE THIS, IF YOU INCLUDE VALUES UNDER THIS SECTION!
-
-    ## if a PodDefault named "kubeflow-pipelines-api-token" should be generated in each profile namespace
-    ##  - https://www.deploykf.org/user-guides/access-kubeflow-pipelines-api/#automatically-mount-a-token-volume-with-poddefaults
-    ##
-    #kfpApiTokenPodDefault: true
