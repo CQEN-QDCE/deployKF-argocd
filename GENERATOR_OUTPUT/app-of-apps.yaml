@@ -29,8 +29,8 @@ spec:
         ##
         - name: "values_files"
           array:
-            - "./././sample-values-0.1.5.yaml"
-            - "./././sample-values-users.yaml"
+            - "./sample-values-0.1.5.yaml"
+            - "./sample-values-users.yaml"
   destination:
     ## NOTE: even if the internal apps target a remote cluster, the apps themselves should be in the Argo CD cluster
     server: "https://kubernetes.default.svc"

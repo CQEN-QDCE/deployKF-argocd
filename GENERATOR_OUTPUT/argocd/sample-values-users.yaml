@@ -51,43 +51,11 @@ deploykf_core:
         users:
           - user-1
           - user-2
-      
-      - id: team-3--admins
-        users:
-          - user-1
-          - user-2
-
-      - id: team-4--users
-        users:
-          - user-1
-          - user-2
           - user-3
+    
 
     profiles:
-     - name: team-fawzi-1
-       members:
-         - group: team-3--admins
-           access:
-             role: edit
-             notebooksAccess: true
-       plugins:
-          - kind: AwsIamForServiceAccount
-            spec:
-              awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
-              AnnotateOnly: true
 
-     - name: team-pierre-1
-       members:
-         - group: team-3--admins
-           access:
-             role: edit
-             notebooksAccess: true
-       plugins:
-          - kind: AwsIamForServiceAccount
-            spec:
-              awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
-              AnnotateOnly: true
-      
      - name: team-fawzi
        members:
          - group: team-1--admins
@@ -109,45 +77,7 @@ deploykf_core:
        plugins:
           - kind: AwsIamForServiceAccount
             spec:
-              awsIamRole: arn:aws:iam::131485263174:role/team-fawzi-role
+              awsIamRole: arn:aws:iam::131485263174:role/team-pierre-role
               AnnotateOnly: true
-
-     - name: team-1
-       members:
-         - group: team-1--admins
-           access:
-             role: edit
-             notebooksAccess: true
-       plugins:
-          - kind: AwsIamForServiceAccount
-            spec:
-              awsIamRole: arn:aws:iam::131485263174:role/team-1-role
-              AnnotateOnly: true
-    
-     - name: team-1-prod
-       members:
-         - group: team-1--admins
-           access:
-             role: edit
-             notebooksAccess: false
-    
-     - name: team-test
-       members:
-         - group: team-1--admins
-           access:
-             role: edit
-             notebooksAccess: true
-       plugins:
-          - kind: AwsIamForServiceAccount
-            spec:
-              awsIamRole: arn:aws:iam::131485263174:role/team-1-role
-              AnnotateOnly: true
-    
-     - name: team-1-prod
-       members:
-         - group: team-1--admins
-           access:
-             role: edit
-             notebooksAccess: false
     
 
